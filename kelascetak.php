@@ -7,6 +7,9 @@ include 'koneksi.php';
 session_start();
 
 $sql = mysqli_query($koneksi, "SELECT *, b.nama_siswa as nama_siswas FROM kelasdetail a join siswa b on a.kode_siswa = b.kode_siswa where kode_kelas = '" . $_GET['ubah'] . "'");
+$query = mysqli_query($koneksi, "Select * from kelas where kode_kelas='" . $_GET['ubah'] . "'");
+$res = mysqli_fetch_array($query);
+
 ?>
 
 <head>
@@ -44,7 +47,7 @@ $sql = mysqli_query($koneksi, "SELECT *, b.nama_siswa as nama_siswas FROM kelasd
 				<div class="row">
 					<div class="col-md-5 mt-3 mb-3">
 						<h5>Daftar Siswa</h5>
-						<h5>Kode Kelas : <?= $_GET['ubah'] ?></h5>
+						<h5> Kelas : <?= $res[1] . " " . $res[2] . " " . $res[3] ?></h5>
 
 					</div>
 
