@@ -17,6 +17,10 @@ $res = mysqli_fetch_array($query);
 $queryMatpel = mysqli_query($koneksi, "SELECT * from matapelajaran where kode_matpel='" . $kode_matpel . "'");
 $result = mysqli_fetch_array($queryMatpel);
 
+$detail = mysqli_query($koneksi, "SELECT * from jadwal where kode_matpel='" . $kode_matpel . "' and kode_matpel='" . $kode_matpel . "' ");
+$results = mysqli_fetch_array($detail);
+
+
 
 ?>
 
@@ -56,6 +60,7 @@ $result = mysqli_fetch_array($queryMatpel);
                     <div class="col-md-5 mt-3 mb-3">
                         <h5>Absensi Kelas <?= $res[1] . " " . $res[2] . " " . $res[3] ?></h5>
                         <h5> Mata Pelajaran : <?= $result["nama_matpel"] ?></h5>
+                        <h5> Hari: <?= $results["hari"] ?> / Jam: <?= $results["jammulai"] . " - " . $results["jamselesai"] ?> </h5>
 
                     </div>
 
