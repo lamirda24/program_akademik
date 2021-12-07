@@ -113,11 +113,11 @@ session_start(); ?>
                         <h6 class="collapse-header">Daftar Table :</h6>
                         <a class="collapse-item" href="laporanSeluruhSiswa.php">Laporan Siswa</a>
                         <a class="collapse-item" href="laporansiswa.php">Laporan Kelas</a>
-                        <a class="collapse-item" href=".php">Laporan Nilai</a>
+                        <a class="collapse-item" href="laporanNilai.php">Laporan Nilai</a>
                         <a class="collapse-item" href="laporanGuru.php">Laporan Guru</a>
                         <a class="collapse-item" href="laporanPengumumunan.php">Laporan Pengumuman</a>
                         <a class="collapse-item" href=".php">Laporan Hasil</a>
-                        <a class="collapse-item" href=".php">Laporan Absensi</a>
+                        <a class="collapse-item" href="laporanAbsensi.php">Laporan Absensi</a>
                     </div>
                 </div>
             </li>
