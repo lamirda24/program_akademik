@@ -1,0 +1,627 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect ,useState} from "react";
+import {
+  CContainer,
+  CCol,
+  CRow,
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CButton,
+  CTableHead,
+  CTableHeaderCell,
+  CTableDataCell,
+  CTableRow,
+  CTable,
+  CFormInput,
+  CTableBody,
+} from "@coreui/react-pro";
+import CIcon from "@coreui/icons-react";
+import {
+  cilArrowBottom,
+  cilArrowTop,
+  cilSwapVertical,
+  cibAddthis,
+  cilXCircle,
+  cilColorBorder,
+  cilTrash,
+} from "@coreui/icons";
+
+import Pagination from "src/components/pagination/Pagination";
+import axios from "axios";
+import Swal from "sweetalert";
+import { useSelector } from "react-redux";
+import AddOutletComponent from "./outletComponents/AddOutletComponent";
+import EditOutletComponent from "./outletComponents/EditOutletComponent";
+
+const Outlet = () => {
+  const token = useSelector((state) => state.user.profile.token);
+
+  const [Add, setAdd] = useState(false);
+  const [Edit, setEdit] = useState(false);
+  const [data, setData] = useState([]);
+  const [meta, setMeta] = useState("");
+  const [refresh, setRefresh] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [projectPerPage, setProjectPerPage] = useState(10);
+  const [search, setSearch] = useState("");
+  const [paginasi, setPaginasi] = useState(false);
+  const [field, setField] = useState("name");
+  const [sort, setSort] = useState("DESC");
+  const [idEdit, setIdEdit] = useState("");
+  const [refreshEdit, setRefreshEdit] = useState(false);
+   const [optionProvinsi, setOptionProvinsi] = useState([]);
+    const [optionPic, setOptionPic] = useState([]);
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(
+        `${
+          process.env.REACT_APP_BASE_URL
+        }/outlet?currentPage=${currentPage}&pageSize=${projectPerPage}&sort=${field}&sortType=${sort}${
+          search ? `&search=${search}` : ""
+        }`,
+        {
+          headers: {
+            access_token: `${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        setLoading(false);
+        setData(response.data.data);
+        setMeta(response.data.meta);
+        if (response.data.meta.pageCount === 0) {
+          setPaginasi(false);
+        } else {
+          setPaginasi(true);
+        }
+        // console.log(response.data.data);
+      })
+      .catch((err) => {
+        setLoading(false);
+        if (err.response) {
+          // Request made and server responded
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+          if (err.response.status === 401) {
+            //   history.push("/");
+            Swal("Session Expired", "", "warning");
+          }
+        } else if (err.request) {
+          // The request was made but no response was received
+          console.log(err.request);
+          Swal("Error Occured. Please Try Again Later!", "", "error");
+          // setLoading(false);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log("Error", err.message);
+          Swal("Error Occured. Please Try Again Later!", "", "error");
+          // setLoading(false);
+        }
+      });
+  }, [refresh]);
+
+   useEffect(() => {
+     axios
+       .get(
+         `${process.env.REACT_APP_BASE_URL}/province
+       `,
+         {
+           headers: {
+             access_token: `${token}`,
+           },
+         }
+       )
+       .then((response) => {
+         let raw = response.data.data;
+         let data = [];
+         raw.forEach((value) => {
+           let obj = {
+             value: value.prov_id,
+             label: value.prov_name,
+           };
+           data.push(obj);
+         });
+         setOptionProvinsi(data);
+       })
+
+       .catch((err) => {
+         if (err.response) {
+           // Request made and server responded
+           console.log(err.response.data);
+           console.log(err.response.status);
+           console.log(err.response.headers);
+           if (err.response.status === 401) {
+             //   history.push("/");
+             Swal("Session Expired", "", "warning");
+           }
+         } else if (err.request) {
+           // The request was made but no response was received
+           console.log(err.request);
+           Swal("Error Occured. Please Try Again Later!", "", "error");
+           // setLoading(false);
+         } else {
+           // Something happened in setting up the request that triggered an Error
+           console.log("Error", err.message);
+           Swal("Error Occured. Please Try Again Later!", "", "error");
+           // setLoading(false);
+         }
+       });
+     axios
+       .get(
+         `${process.env.REACT_APP_BASE_URL}/employee/getPic
+          `,
+         {
+           headers: {
+             access_token: `${token}`,
+           },
+         }
+       )
+       .then((response) => {
+         let raw = response.data.data;
+         let data = [];
+         raw.forEach((value) => {
+           let obj = {
+             value: value.nip,
+             label: value.name,
+           };
+           data.push(obj);
+         });
+         setOptionPic(data);
+       })
+
+       .catch((err) => {
+         if (err.response) {
+           // Request made and server responded
+           console.log(err.response.data);
+           console.log(err.response.status);
+           console.log(err.response.headers);
+           if (err.response.status === 401) {
+             //   history.push("/");
+             Swal("Session Expired", "", "warning");
+           }
+         } else if (err.request) {
+           // The request was made but no response was received
+           console.log(err.request);
+           Swal("Error Occured. Please Try Again Later!", "", "error");
+           // setLoading(false);
+         } else {
+           // Something happened in setting up the request that triggered an Error
+           console.log("Error", err.message);
+           Swal("Error Occured. Please Try Again Later!", "", "error");
+           // setLoading(false);
+         }
+       });
+   }, []);
+
+  const showAdd = () => {
+     window.scrollTo(0, 0);
+    setEdit(false);
+    setAdd(true);
+    console.log("showadd");
+  };
+
+  const showEdit = (dataEdit) => {
+     window.scrollTo(0, 0);
+    setEdit(true);
+    setAdd(false);
+    setIdEdit(dataEdit.outlet_id);
+    setRefreshEdit(!refreshEdit);
+    console.log("showedit");
+  };
+  const closeAdd = () => {
+    setAdd(false);
+    console.log("closeadd");
+  };
+  const closeEdit = () => {
+    setEdit(false);
+    console.log("closeedit");
+  };
+  const saveSearch = (e) => {
+    setSearch(e.target.value);
+    // setCurrentPage(1);
+    // setRefresh(!refresh);
+  };
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      setCurrentPage(1);
+      setRefresh(!refresh);
+    }
+  };
+  const onChangeLimit = (e) => {
+    setProjectPerPage(e.target.value);
+    setCurrentPage(1);
+    setRefresh(!refresh);
+  };
+
+  const onSort = (name) => {
+    setField(name);
+    setSort(sort === "DESC" ? "ASC" : "DESC");
+    setRefresh(!refresh);
+  };
+  const handlePre = (page) => {
+    setCurrentPage(page - 1);
+    setRefresh(!refresh);
+  };
+
+  const handleNext = (page) => {
+    setCurrentPage(page + 1);
+    setRefresh(!refresh);
+  };
+  const handlePageJump = (page) => {
+    setCurrentPage(page);
+    setRefresh(!refresh);
+  };
+  const parentRefreshAdd = () => {
+    setRefresh(!refresh);
+    setAdd(false);
+  };
+  const parentRefreshEdit = () => {
+    setRefresh(!refresh);
+    setEdit(false);
+  };
+
+       const deleteOutlet = (data) => {
+           setEdit(false);
+           setAdd(false);
+         Swal("Are you sure to delete this data?", {
+           dangerMode: true,
+           cancel: true,
+           buttons: true,
+           icon: "warning",
+         }).then((result) => {
+           if (result) {
+             axios
+               .delete(
+                 `${process.env.REACT_APP_BASE_URL}/outlet/${data.outlet_id}`,
+                 {
+                   headers: {
+                     access_token: `${token}`,
+                   },
+                 }
+               )
+               .then((response) => {
+                 Swal("Sukses Delete Outlet!", "", "success");
+                 setRefresh(!refresh);
+                 //  history.push("/leads/list-leads");
+               })
+               .catch((err) => {
+                 if (err.response) {
+                   // Request made and server responded
+                   console.log(err.response.data);
+                   console.log(err.response.status);
+                   console.log(err.response.headers);
+                   if (err.response.status === 401) {
+                     //  localStorage.clear();
+                     //  history.push("/");
+                     Swal("Session Expired", "", "error");
+                   } else {
+                     Swal(
+                       err?.response?.data?.message || "gagal delete outlet",
+                       "",
+                       "error"
+                     );
+                   }
+                 } else if (err.request) {
+                   // The request was made but no response was received
+                   console.log(err.request);
+                   Swal("Error Occured. Please Try Again Later!", "", "error");
+                 } else {
+                   // Something happened in setting up the request that triggered an Error
+                   console.log("Error", err.message);
+                   Swal("Error Occured. Please Try Again Later!", "", "error");
+                 }
+               });
+           }
+         });
+       };
+     
+ 
+  return (
+    <CContainer>
+      <CCol>
+        <h1>Outlet</h1>
+      </CCol>
+      {Add === true ? (
+        <CCol className="mb-3">
+          <CCard>
+            <CCardHeader
+              component="h5"
+              className="header-wrapper-manajemen-role"
+            >
+              {" "}
+              <div className="d-flex justify-content-between align-items-center">
+                <div className="col-text-title">
+                  <CIcon icon={cibAddthis} /> &nbsp; Tambah Data
+                </div>
+                <div className="col-btn">
+                  <CButton
+                    color="light"
+                    className="float-lg-end btn-close-data"
+                    onClick={closeAdd}
+                  >
+                    <CIcon icon={cilXCircle} /> Close
+                  </CButton>
+                </div>
+              </div>
+            </CCardHeader>
+            <CCardBody>
+              <CRow>
+                {" "}
+                <AddOutletComponent
+                  provinsiOption={optionProvinsi}
+                  picOption={optionPic}
+                  sendRefresh={parentRefreshAdd}
+                />{" "}
+              </CRow>
+            </CCardBody>
+          </CCard>
+        </CCol>
+      ) : (
+        <></>
+      )}
+      {Edit === true ? (
+        <CCol className="mb-3">
+          <CCard>
+            <CCardHeader
+              component="h5"
+              className="header-wrapper-manajemen-role"
+            >
+              {" "}
+              <div className="d-flex justify-content-between align-items-center">
+                <div className="col-text-title">
+                  <CIcon icon={cibAddthis} /> &nbsp; Edit Data
+                </div>
+                <div className="col-btn">
+                  <CButton
+                    color="light"
+                    className="float-lg-end btn-close-data"
+                    onClick={closeEdit}
+                  >
+                    <CIcon icon={cilXCircle} /> Close
+                  </CButton>
+                </div>
+              </div>
+            </CCardHeader>
+            <CCardBody>
+              <CRow>
+                {" "}
+                <EditOutletComponent
+                  provinsiOption={optionProvinsi}
+                  picOption={optionPic}
+                  id={idEdit}
+                  refresh={refreshEdit}
+                  sendRefresh={parentRefreshEdit}
+                />{" "}
+              </CRow>
+            </CCardBody>
+          </CCard>
+        </CCol>
+      ) : (
+        <></>
+      )}
+      {Add === false ? (
+        <CCol className="mt-5">
+          <CCard className="card-height">
+            <CCardHeader
+              component="h5"
+              className="header-wrapper-manajemen-role"
+            >
+              <div className="d-flex justify-content-between align-items-center">
+                <div className="col-text-title">Tambah Outlet</div>
+                <CButton
+                  color="dark"
+                  className="float-lg-end btn-add-data"
+                  onClick={showAdd}
+                >
+                  <CIcon icon={cibAddthis} /> Tambah
+                </CButton>
+              </div>
+            </CCardHeader>
+          </CCard>
+        </CCol>
+      ) : (
+        <></>
+      )}
+      <CCol className="mt-5">
+        <CCard>
+          <CCardHeader component="h5" className="header-wrapper-manajemen-role">
+            <div className="col-text-title">Daftar Outlet</div>
+          </CCardHeader>
+          <CCardBody>
+            <section className="d-flex justify-content-between mb-3">
+              <div
+                style={{
+                  marginTop: 8,
+                }}
+              >
+                <label
+                  style={{
+                    fontSize: 15,
+                  }}
+                >
+                  Show{" "}
+                  <select
+                    name="example_length"
+                    aria-controls="example"
+                    className=""
+                    value={projectPerPage}
+                    onChange={onChangeLimit}
+                  >
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>{" "}
+                  entries
+                </label>
+              </div>
+              <div className="search">
+                <CFormInput
+                  type="text"
+                  placeholder="search"
+                  onKeyPress={(e) => handleKeyPress(e)}
+                  onChange={(e) => saveSearch(e)}
+                ></CFormInput>
+              </div>
+            </section>
+            <CTable>
+              <CTableHead className="table-head">
+                <CTableRow>
+                  <CTableHeaderCell className="header-table" scope="col">
+                    No{" "}
+                  </CTableHeaderCell>
+                  <CTableHeaderCell
+                    className="onHover"
+                    scope="col"
+                    onClick={() => onSort("name")}
+                  >
+                    {field === "name" ? (
+                      sort === "ASC" ? (
+                        <CIcon icon={cilArrowBottom} />
+                      ) : (
+                        <CIcon icon={cilArrowTop} />
+                      )
+                    ) : (
+                      <CIcon icon={cilSwapVertical} color="light" />
+                    )}{" "}
+                    Nama Outlet
+                  </CTableHeaderCell>
+                  <CTableHeaderCell
+                    className="onHover"
+                    scope="col"
+                    onClick={() => onSort("location")}
+                  >
+                    {field === "location" ? (
+                      sort === "ASC" ? (
+                        <CIcon icon={cilArrowBottom} />
+                      ) : (
+                        <CIcon icon={cilArrowTop} />
+                      )
+                    ) : (
+                      <CIcon icon={cilSwapVertical} color="light" />
+                    )}{" "}
+                    Alamat
+                  </CTableHeaderCell>
+                  <CTableHeaderCell
+                    className="onHover"
+                    scope="col"
+                    onClick={() => onSort("phone")}
+                  >
+                    {field === "phone" ? (
+                      sort === "ASC" ? (
+                        <CIcon icon={cilArrowBottom} />
+                      ) : (
+                        <CIcon icon={cilArrowTop} />
+                      )
+                    ) : (
+                      <CIcon icon={cilSwapVertical} color="light" />
+                    )}{" "}
+                    Telefon
+                  </CTableHeaderCell>
+                  <CTableHeaderCell
+                    className="onHover"
+                    scope="col"
+                    onClick={() => onSort("pic")}
+                  >
+                    {field === "pic" ? (
+                      sort === "ASC" ? (
+                        <CIcon icon={cilArrowBottom} />
+                      ) : (
+                        <CIcon icon={cilArrowTop} />
+                      )
+                    ) : (
+                      <CIcon icon={cilSwapVertical} color="light" />
+                    )}{" "}
+                    PIC
+                  </CTableHeaderCell>
+                  <CTableHeaderCell className="header-table" scope="col">
+                    Action
+                  </CTableHeaderCell>
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+                {loading ? (
+                  <>
+                    <label className="spinner-grow text-undefined spinner-grow-sm mt-2">
+                      <span className="visually-hidden">Loading....</span>
+                    </label>
+                    <label className="spinner-grow text-undefined spinner-grow-sm">
+                      <span className="visually-hidden">Loading....</span>
+                    </label>
+                    <label className="spinner-grow text-undefined spinner-grow-sm">
+                      <span className="visually-hidden">Loading....</span>
+                    </label>
+                  </>
+                ) : (
+                  <>
+                    {data.length !== 0 ? (
+                      data?.map((data) => (
+                        <CTableRow key={data.outlet_id}>
+                          <CTableDataCell scope="row">
+                            {data.outlet_id}
+                          </CTableDataCell>
+                          <CTableDataCell>{data.name}</CTableDataCell>
+                          <CTableDataCell>{data.location}</CTableDataCell>
+                          <CTableDataCell>{data.phone}</CTableDataCell>
+                          <CTableDataCell>{data.pic}</CTableDataCell>
+                          <CTableDataCell scope="row">
+                            <CButton
+                              color="warning"
+                              size="sm"
+                              onClick={() => showEdit(data)}
+                            >
+                              <CIcon icon={cilColorBorder} />
+                            </CButton>{" "}
+                            <CButton
+                              color="danger"
+                              size="sm"
+                              onClick={() => deleteOutlet(data)}
+                            >
+                              <CIcon icon={cilTrash} />
+                            </CButton>
+                          </CTableDataCell>
+                        </CTableRow>
+                      ))
+                    ) : (
+                      <CTableRow>
+                        <CTableDataCell className="font-italic" colSpan="10">
+                          Data not available
+                        </CTableDataCell>
+                      </CTableRow>
+                    )}
+                  </>
+                )}
+              </CTableBody>
+            </CTable>
+            {paginasi ? (
+              <>
+                <nav className="nav-wrapper">
+                  <div className="col-md-2">
+                    <label>Showing 1 of 1 entries</label>
+                  </div>
+                  <div className="col-btn float-lg-end">
+                    <Pagination
+                      currentPage={currentPage}
+                      pageCount={meta.pageCount}
+                      handleNext={handleNext}
+                      handlePre={handlePre}
+                      handlePageJump={handlePageJump}
+                    />
+                  </div>
+                </nav>
+              </>
+            ) : (
+              <></>
+            )}
+          </CCardBody>
+        </CCard>
+      </CCol>
+    </CContainer>
+  );
+};
+
+export default Outlet;

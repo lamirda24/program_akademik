@@ -65,7 +65,7 @@ if (!isset($_SESSION['emailuser']))
                             <!-- untuk icon edit dan delete -->
                             <td>
                                 <?php if ($row['filePdf'] != "") {
-
+                                    $dir = "upload";
                                 ?>
                                     <a href="<?= $dir . "/" . $row['filePdf'] ?>" target="_blank" class="btn btn-primary btn-sm" title="View">
                                         <?= $row['filePdf']; ?>

@@ -4,7 +4,7 @@
 include "includes/config.php";
 
 $kode_kelas = $_GET['kelas'];
-$matpel = mysqli_query($connection, "SELECT * FROM matapelajaran");
+$matpel = mysqli_query($connection, "SELECT kode_matpel,kelas, matpel from jadwal where kode_kelas='$kode_kelas'");
 $query = mysqli_query($connection, "SELECT * from kelas where kode_kelas='" . $kode_kelas . "'");
 $res = mysqli_fetch_array($query);
 
@@ -64,7 +64,7 @@ if (!isset($_SESSION['emailuser']))
                         <tr>
                             <td><?php echo $nomor; ?></td>
                             <td><?php echo $row['kode_matpel']; ?></td>
-                            <td><?php echo $row['nama_matpel'] ?></td>
+                            <td><?php echo $row['matpel'] ?></td>
 
                             <td>
                                 <a href="laporanAbsenSiswa.php?kelas=<?php echo $kode_kelas ?>&matpel=<?= $row['kode_matpel'] ?>" class="btn btn-primary btn-sm" title="view">

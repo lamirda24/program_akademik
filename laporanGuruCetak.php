@@ -45,14 +45,16 @@
 
                 </div>
                 <div class="row">
-                    <table class="table table success">
-                        <thead class="thead-dark">
+                    <table style="width: 100%" class="table table-bordered">
+                        <thead>
                             <tr>
                                 <th>No</th>
                                 <th>Kode</th>
                                 <th>Nama</th>
                                 <th>Mengajar Kelas</th>
                                 <th>Mata Pelajaran</th>
+                                <th>Nomor Telepon</th>
+                                <th>Alamat</th>
                         </thead>
 
                         <tbody>
@@ -68,6 +70,11 @@
                                     <td><?php echo $row['nama_guru']; ?></td>
                                     <td><?php echo $row['kelas']; ?></td>
                                     <td><?php echo $row['matpel']; ?></td>
+                                    <td><?php echo $row['notelp_guru']; ?></td>
+                                    <td><?php echo $row['alamat_guru']; ?></td>
+
+
+
                                     <!-- untuk icon edit dan delete -->
 
                                 </tr>

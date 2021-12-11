@@ -2,6 +2,13 @@
 
 <?php
 include "includes/config.php";
+$kode_kelas = $_GET['ubah'];
+$id = $_GET['id'];
+$kode_matpel = $_GET['matpel'];
+$jadwal = mysqli_query($connection, "Select * from jadwal where id='$id'");
+$resJadwal = mysqli_fetch_row($jadwal);
+
+
 if (isset($_POST['simpan'])) {
     $matpel = $_POST['inputmatpel'];
     $semester = $_POST['inputsemester'];
@@ -11,31 +18,19 @@ if (isset($_POST['simpan'])) {
     $hari = $_POST['inputhari'];
     $jammulai = $_POST['inputjammulai'];
     $jamselesai = $_POST['inputjamselesai'];
-    $nama_kelas = mysqli_query($connection, "select * from kelas where kode_kelas='$kelas'");
+    $nama_kelas = mysqli_query($connection, "select * from kelas where kode_kelas='$kode_kelas'");
     $resKelas = mysqli_fetch_row($nama_kelas);
     $resKelas = $resKelas[1] . " " . $resKelas[2] . " " . $resKelas[3];
-    $resMapel = mysqli_query($connection, "select * from matapelajaran where kode_matpel='$matpel'");
+    $resMapel = mysqli_query($connection, "select * from matapelajaran where kode_matpel='$kode_matpel'");
     $nama_matpel = mysqli_fetch_row($resMapel);
     $nama_matpel = $nama_matpel[2];
     $resGuru = mysqli_query($connection, "select * from guru where kode_guru='$guru'");
-
     $nama_guru = mysqli_fetch_row($resGuru);
     $nama_guru = $nama_guru[1];
-
-
-    // echo $nama_guru;
-
-    // print($resKelas . $kelas . $semester . $tahun . $matpel . $nama_guru  . $guru . $hari . $jammulai . $jamselesai . $nama_matpel);
-
-
+    mysqli_query($connection, "update jadwal set kelas='$resKelas', kode_kelas='$kelas', semester='$semester', tahun='$tahun', matpel='$nama_matpel', kode_matpel='$matpel', kode_guru='$guru', guru='$nama_guru', hari='$hari', jammulai='$jammulai', jamselesai='$jamselesai' where id='$id'");
+    // print_r($query);
+    // print_r("update jadwal set kelas='$resKelas', kode_kelas='$kelas', semester='$semester', tahun='$tahun', matpel='$nama_matpel', kode_matpel='$matpel', kode_guru='$guru', guru='$nama_guru', hari='$hari', jammulai='$jammulai', jamselesai='$jamselesai' where id='$id'");
     // die;
-
-
-
-
-
-    mysqli_query($connection, "INSERT INTO `jadwal` (`id`, `kelas`, `kode_kelas`, `semester`, `tahun`, `matpel`, `kode_matpel`, `kode_guru`, `guru`, `hari`, `jammulai`, `jamselesai`) VALUES (NULL, '$resKelas', '$kelas', '$semester', '$tahun', '$nama_matpel', '$mapel', '$guru', '$nama_guru', '$hari', '$jammulai', '$jamselesai')");
-    // mysqli_query($connection, "insert into jadwal values('','$resKelas','$kelas','$semester','$tahun','$nama_matpel','$matpel','$guru',$nama_guru','$hari','$jammulai','$jamselesai')");
     header("location:jadwalinput.php");
 }
 $matapelajaran = mysqli_query($connection, "select * from matapelajaran");
@@ -48,7 +43,7 @@ $kelas = mysqli_query($connection, "select * from kelas");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input Jadwal</title>
+    <title>Edit Jadwal</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 </head>
 
@@ -73,7 +68,7 @@ if (!isset($_SESSION['emailuser']))
 
                     <div class="jumbotron jumbotron-fluid">
                         <div class="container">
-                            <h1 class="display-4">Input Jadwal</h1>
+                            <h1 class="display-4">Edit Jadwal</h1>
                         </div>
                     </div>
                     <!--penutup jumbotron-->
@@ -86,7 +81,7 @@ if (!isset($_SESSION['emailuser']))
 
                                     <option>Kelas</option>
                                     <?php while ($row = mysqli_fetch_array($kelas)) { ?>
-                                        <option value="<?php echo $row["kode_kelas"]; ?>">
+                                        <option value="<?php echo $row["kode_kelas"];  ?>" <?= $resJadwal[2] == $row["kode_kelas"] ? "selected" : "" ?>>
                                             <?php echo $row["nama_kelas"] ?>
                                             <?php echo $row["jurusan"] ?>
                                             <?php echo $row["nomor_kelas"] ?>
@@ -102,22 +97,22 @@ if (!isset($_SESSION['emailuser']))
                         <div class=" form-group row">
                             <label for="semester" class="col-sm-2 col-form-label">Semester</label>
                             <div class="col-sm-10">
-                                <select class="form-control" required name="inputsemester">
-                                    <option value="Genap">Genap</option>
-                                    <option value="Ganjil">Ganjil</option>
+                                <select class="form-control" required name="inputsemester" value="">
+                                    <option value="Genap" <?= $resJadwal[3] == "Genap" ? "selected" : "" ?>>Genap</option>
+                                    <option value="Ganjil" <?= $resJadwal[3] == "Ganjil" ? "selected" : "" ?>>Ganjil</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class=" form-group row">
                             <label for="tahun" class="col-sm-2 col-form-label">Tahun</label>
                             <div class="col-sm-10">
                                 <select class="form-control" required name="inputtahun">
-                                    <option value="2017">2017</option>
-                                    <option value="2018">2018</option>
-                                    <option value="2019">2019</option>
-                                    <option value="2020">2020</option>
-                                    <option value="2021">2021</option>
+                                    <option value="2017" <?= $resJadwal[4] == "2017" ? "selected" : "" ?>>2017</option>
+                                    <option value="2018" <?= $resJadwal[4] == "2018" ? "selected" : "" ?>>2018</option>
+                                    <option value="2019" <?= $resJadwal[4] == "2019" ? "selected" : "" ?>>2019</option>
+                                    <option value="2020" <?= $resJadwal[4] == "2020" ? "selected" : "" ?>>2020</option>
+                                    <option value="2021" <?= $resJadwal[4] == "2021" ? "selected" : "" ?>>2021</option>
                                 </select>
                             </div>
                         </div>
@@ -129,7 +124,7 @@ if (!isset($_SESSION['emailuser']))
 
                                     <option>Mata Pelajaran</option>
                                     <?php while ($row = mysqli_fetch_array($matapelajaran)) { ?>
-                                        <option value="<?php echo $row["kode_matpel"] ?>">
+                                        <option value="<?php echo $row["kode_matpel"] ?>" <?= $row['kode_matpel'] == $resJadwal[6] ? "selected" : "" ?>>
                                             <?php echo $row["nama_matpel"] ?>
                                         </option>
                                     <?php } ?>
@@ -145,7 +140,7 @@ if (!isset($_SESSION['emailuser']))
 
                                     <option>Guru</option>
                                     <?php while ($row = mysqli_fetch_array($guru)) { ?>
-                                        <option value="<?php echo $row["kode_guru"] ?>">
+                                        <option value="<?php echo $row["kode_guru"] ?>" <?= $resJadwal[7] == $row['kode_guru'] ? "selected" : "" ?>>
                                             <?php echo $row["nama_guru"] ?>
                                         </option>
                                     <?php } ?>
@@ -158,11 +153,11 @@ if (!isset($_SESSION['emailuser']))
                             <label for="hari" class="col-sm-2 col-form-label">Hari</label>
                             <div class="col-sm-10">
                                 <select class="form-control" required name="inputhari">
-                                    <option value="Senin">Senin</option>
-                                    <option value="Selasa">Selasa</option>
-                                    <option value="Rabu">Rabu</option>
-                                    <option value="Kamis">Kamis</option>
-                                    <option value="Jumat">Jumat</option>
+                                    <option value="Senin" <?= $resJadwal[9] == "Senin" ? "selected" : "" ?>>Senin</option>
+                                    <option value="Selasa" <?= $resJadwal[9] == "Selasa" ? "selected" : "" ?>>Selasa</option>
+                                    <option value="Rabu" <?= $resJadwal[9] == "Rabu" ? "selected" : "" ?>>Rabu</option>
+                                    <option value="Kamis" <?= $resJadwal[9] == "Kamis" ? "selected" : "" ?>>Kamis</option>
+                                    <option value="Jumat" <?= $resJadwal[9] == "Jumat" ? "selected" : "" ?>>Jumat</option>
                                 </select>
                             </div>
                         </div>
@@ -170,14 +165,14 @@ if (!isset($_SESSION['emailuser']))
                         <div class="form-group row">
                             <label for="jammulai" class="col-sm-2 col-form-label">Jam Mulai</label>
                             <div class="col-sm-10">
-                                <input type="time" class="form-control" name="inputjammulai" id="jammulai" placeholder="Input Min">
+                                <input type="time" class="form-control" name="inputjammulai" id="jammulai" placeholder="Input Min" value="<?= $resJadwal[10] ?>">
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label for="jamselesai" class="col-sm-2 col-form-label">Jam Selesai</label>
                             <div class="col-sm-10">
-                                <input type="time" class="form-control" name="inputjamselesai" id="jamselesai" placeholder="Input Max ">
+                                <input type="time" class="form-control" name="inputjamselesai" id="jamselesai" placeholder="Input Max " value="<?= $resJadwal[11] ?>">
                             </div>
                         </div>
 
@@ -284,6 +279,8 @@ if (!isset($_SESSION['emailuser']))
                             </svg>
                         </a>
                     </td>
+
+
                     <!-- akhir icon edit delete -->
                 </tr>
                 <?php $nomor = $nomor + 1; ?>

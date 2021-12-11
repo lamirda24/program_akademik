@@ -4,29 +4,24 @@
 include "includes/config.php";
 $dir = "upload";
 if (isset($_POST['simpan'])) {
-  $dir = $dir . basename($_FILES['file']['name']);
   $file_type = $_FILES['file']['type'];
   $kode_pengumuman = $_POST['inputkode'];
   $judul_pengumuman = $_POST['inputjudul'];
   $tanggal_pengumuman = $_POST['inputtanggal'];
+  $nama_file = $kode_pengumuman . "-" . date("dmY") . "-" . "pengumuman.pdf";
   $isi_pengumuman = ($_POST['inputisi']);
   if ($file_type == "application/pdf") {
-    if (move_uploaded_file($_FILES['file']['tmp_name'], $dir)) {
-      $pdf =  basename($_FILES['file']['name']);
-      echo "File Berhasil di Upload  file " . basename($_FILES['file']['name']) . " is uploaded";
+    if (move_uploaded_file($_FILES['file']['tmp_name'], $dir . "/" . $nama_file)) {
       //Jalankan perintah insert ke database
-      mysqli_query($connection, "insert into pengumuman values('','$kode_pengumunan','$judul_pengumuman','$tanggal_pengumuman','$isi_pengumuman','$pdf')");
+      mysqli_query($connection, "insert into pengumuman values('','$kode_pengumuman','$judul_pengumuman','$tanggal_pengumuman','$isi_pengumuman','$nama_file')");
     } else {
       echo "File Gagal di Upload";
+      die;
     }
   } else {
     echo "Hanya Boleh upload PDF.<br>";
   }
-
-
-
-
-  die;
+  header("location:pengumumaninput.php");
 }
 ?>
 
@@ -196,7 +191,7 @@ if (!isset($_SESSION['emailuser']))
 
                 ?>
                   <a href="<?= $dir . "/" . $row['filePdf'] ?>" target="_blank" class="btn btn-primary btn-sm" title="View">
-                    <?= $row['filePdf']; ?>
+                    LIHAT PENGUMUMAN
                   </a>
                 <?php } else {
                   echo "-";

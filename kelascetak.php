@@ -60,6 +60,7 @@ $res = mysqli_fetch_array($query);
 							<th>Kode Siswa</th>
 							<th>Nama Siswa</th>
 							<th>Nomor Telepon</th>
+							<th>Alamat</th>
 
 						</tr>
 						<?php
@@ -72,6 +73,9 @@ $res = mysqli_fetch_array($query);
 								<td><?php echo $data['kode_siswa']; ?></td>
 								<td><?php echo $data['nama_siswas']; ?></td>
 								<td><?php echo $data['notelp_siswa']; ?></td>
+								<td><?php echo $data['alamat_siswa']; ?></td>
+
+
 
 							</tr>
 						<?php

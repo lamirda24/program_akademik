@@ -52,11 +52,12 @@
                             <th>Nama Siswa</th>
                             <th>Kode Kelas</th>
                             <th>Nomor Telepon</th>
+                            <th>Alamat</th>
 
                         </tr>
                         <?php
                         $no = 1;
-                        $sql = mysqli_query($koneksi, "SELECT * FROM siswa join kelasdetail on siswa.kode_siswa = kelasdetail.kode_siswa order by siswa.nama_siswa asc");
+                        $sql = mysqli_query($koneksi, "SELECT * FROM siswa join kelasdetail on siswa.kode_siswa = kelasdetail.kode_siswa  join kelas on kelasdetail.kode_kelas = kelas.kode_kelas order by siswa.nama_siswa asc");
                         while ($data = mysqli_fetch_array($sql)) {
                         ?>
                             <tr>
@@ -71,10 +72,13 @@
                                     <?= $data['nama_siswa']; ?>
                                 </td>
                                 <td>
-                                    <?= $data['kode_kelas']; ?>
+                                    <?= $data['nama_kelas'] . " " . $data['jurusan'] . " " . $data['nomor_kelas']; ?>
                                 </td>
                                 <td>
                                     <?= $data['notelp_siswa']; ?>
+                                </td>
+                                <td>
+                                    <?= $data['alamat_siswa']; ?>
                                 </td>
                             </tr>
                         <?php }
