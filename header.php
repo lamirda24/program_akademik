@@ -82,6 +82,10 @@ session_start(); ?>
                         <a class="collapse-item" href="kriteriainput.php">Data Kriteria</a>
                         <a class="collapse-item" href="parameterinput.php">Data Parameter</a>
                         <a class="collapse-item" href="bobotnilaiinput.php">Data Bobot</a>
+                        <a class="collapse-item" href="spkInput.php">SPK Input</a>
+
+
+
                     </div>
                 </div>
             </li>
