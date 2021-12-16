@@ -120,7 +120,7 @@ session_start(); ?>
                         <a class="collapse-item" href="laporanNilai.php">Laporan Nilai</a>
                         <a class="collapse-item" href="laporanGuru.php">Laporan Guru</a>
                         <a class="collapse-item" href="laporanPengumumunan.php">Laporan Pengumuman</a>
-                        <a class="collapse-item" href=".php">Laporan Hasil</a>
+                        <a class="collapse-item" href="laporanSpk.php">Laporan Hasil</a>
                         <a class="collapse-item" href="laporanAbsensi.php">Laporan Absensi</a>
                     </div>
                 </div>

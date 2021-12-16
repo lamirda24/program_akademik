@@ -2,7 +2,7 @@
 
 <?php
 include "includes/config.php";
-$siwa = mysqli_query($connection, "select * from siswa");
+$siswa = mysqli_query($connection, "select * from siswa");
 if (isset($_POST['simpan'])) {
     if (isset($_REQUEST['kode_siswa'])) {
         $kode_siswa = $_REQUEST['kode_siswa'];
@@ -15,7 +15,13 @@ if (isset($_POST['simpan'])) {
     $c2 = $_POST['c2'];
     $c3 = $_POST['c3'];
 
-    mysqli_query($connection, "INSERT INTO spk  VALUES('','$kode_siswa','$c1','$c2','$c3','')");
+    $qCheck = mysqli_query($connection, "select * from spk where kode_siswa='$kode_siswa'");
+    $rowcount = mysqli_num_rows($qCheck);
+    if ($rowcount > 0) {
+        mysqli_query($connection, "UPDATE  spk  SET c1='$c1',c2='$c2',c3='$c3' WHERE kode_siswa='$kode_siswa'");
+    } else {
+        mysqli_query($connection, "INSERT INTO spk  VALUES('','$kode_siswa','$c1','$c2','$c3','')");
+    }
     header("location:spkInput.php");
 }
 
@@ -61,7 +67,7 @@ if (!isset($_SESSION['emailuser']))
                             <div class="col-sm-10">
                                 <select name="kode_siswa" class="form-control" id="kode_siswa">
                                     <option>Siswa</option>
-                                    <?php while ($row = mysqli_fetch_array($siwa)) { ?>
+                                    <?php while ($row = mysqli_fetch_array($siswa)) { ?>
                                         <option value="<?php echo $row["kode_siswa"] ?>">
                                             <?php echo $row["nama_siswa"] ?>
                                         </option>
