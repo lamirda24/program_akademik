@@ -10,7 +10,7 @@ include "includes/config.php";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Guru</title>
+    <title>Laporan Hasil</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 </head>
 
@@ -57,7 +57,7 @@ if (!isset($_SESSION['emailuser']))
 
 
                 <div class="col-md-2">
-                    <a href="hitungSpk.php" target="_blank" class="btn btn-success ml-5">
+                    <a href="hitungSpk.php" class="btn btn-success ml-5">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
                             <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
                             <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z" />
@@ -73,18 +73,18 @@ if (!isset($_SESSION['emailuser']))
                 <thead class="thead-dark">
                     <tr>
                         <th>No</th>
-                        <th>Kode</th>
+                        <th>Kode Siswa</th>
                         <th>Nama</th>
-                        <th>Pendapatan Orangtua</th>
-                        <th>Tanggungan Orangtua</th>
-                        <th>Nilai Rata Rata</th>
+                        <th>Kelas</th>
+                        <th>Alamat Siswa</th>
+                        <th>Nomor Telepon</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     <?php
 
-                    $query = mysqli_query($connection, "select * from spk join siswa on spk.kode_siswa = siswa.kode_siswa");
+                    $query = mysqli_query($connection, "select * from spk join siswa on spk.kode_siswa = siswa.kode_siswa join kelasdetail on kelasdetail.kode_siswa = siswa.kode_siswa join kelas on kelasdetail.kode_kelas = kelas.kode_kelas ");
 
                     $nomor = 1;
                     while ($row = mysqli_fetch_array($query)) { ?>
@@ -92,9 +92,9 @@ if (!isset($_SESSION['emailuser']))
                             <td><?php echo $nomor++; ?></td>
                             <td><?php echo $row['kode_siswa']; ?></td>
                             <td><?php echo $row['nama_siswa']; ?></td>
-                            <td><?php echo $row['c1']; ?></td>
-                            <td><?php echo $row['c2']; ?></td>
-                            <td><?php echo $row['c3']; ?></td>
+                            <td><?php echo $row['nama_kelas'] . " " . $row['jurusan'] . " " . $row['nomor_kelas'] ?></td>
+                            <td><?php echo $row['alamat_siswa']; ?></td>
+                            <td><?php echo $row['notelp_siswa']; ?></td>
                         </tr>
 
                     <?php } ?>
