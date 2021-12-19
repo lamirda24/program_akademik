@@ -76,7 +76,7 @@ $query = mysqli_query($koneksi, "select * from spk join siswa on spk.kode_siswa 
 								<td><?php echo $row['nama_kelas'] . " " . $row['jurusan'] . " " . $row['nomor_kelas'] ?></td>
 								<td><?php echo $row['alamat_siswa']; ?></td>
 								<td><?php echo $row['notelp_siswa']; ?></td>
-								<td><?php echo $row['hasil_spk']; ?></td>
+								<td><?php echo round($row['hasil_spk'], 2); ?></td>
 
 							</tr>
 						<?php

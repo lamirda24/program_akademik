@@ -31,9 +31,10 @@ foreach ($rows as $res) {
         if ($row['kode_kriteria'] == "KK001") {
             if ($c1 <= $row['max'] && $c1 > $row['min']) {
                 $bobotC1 = $row['bobot'];
+            } else {
+                $bobotC1 = 5;
             }
         }
-
         if ($row['kode_kriteria'] == "KK002") {
             if ($c2 == $row['min']) {
                 $bobotC2 = $row['bobot'];

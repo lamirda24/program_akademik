@@ -3,28 +3,40 @@
 
 <head>
 
-<?php 
+    <?php
     include "includes/config.php";
     ob_start();
     session_start();
 
-    if(isset($_POST["submitlogin"]))
-    {
+    if (isset($_POST["submitlogin"])) {
         $emailuser = $_POST["useremail"];
         $passuser = MD5($_POST["pass"]);
-        $sql_login = mysqli_query($connection, "SELECT * FROM admin WHERE adminEMAIL = '$emailuser' OR adminPASSWORD = '$passuser'");
+        $sql_login = mysqli_query($connection, "SELECT * FROM akun_user WHERE email_user = '$emailuser' OR password_user = '$passuser'");
 
-        if(mysqli_num_rows($sql_login)>0)
-        {
-            $row_admin = mysqli_fetch_array($sql_login);
-            $_SESSION['kodeuser'] = $row_admin['adminID'];
-			$_SESSION['namauser'] = $row_admin['adminNAMA'];
-            $_SESSION['emailuser'] = $row_admin['adminEMAIL'];
-			$_SESSION['role'] = $row_admin['adminROLE'];
+        if (mysqli_num_rows($sql_login) > 0) {
+
+            $user = mysqli_fetch_assoc($sql_login);
+            $role =  $user['role_user'];
+
+            $query = mysqli_query($connection, "SELECT * FROM $role WHERE email_$role = '$emailuser'");
+            $akun = mysqli_fetch_assoc($query);
+
+
+            $_SESSION['kodeuser'] = $akun['kode_' . $role . ''];
+            $_SESSION['namauser'] = $akun['nama_' . $role . ''];
+            $_SESSION['emailuser'] = $akun['email_' . $role . ''];
+            $_SESSION['role'] = $role;
+
+
             header("location:index.php");
+        } else { ?>
+            <script>
+                alert("AKUN TIDAK TERDAFTAR!")
+            </script>
+    <?php die;
         }
     }
-?>
+    ?>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -36,9 +48,7 @@
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -53,12 +63,12 @@
         <div class="row justify-content-center">
 
             <div class="col-xl-10 col-lg-12 col-md-9">
-            
+
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                        <img class="col-lg-6 d-none d-lg-block bg-login-image" src="img/logo 2.jpg">
+                            <img class="col-lg-6 d-none d-lg-block bg-login-image" src="img/logo 2.jpg">
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
@@ -66,25 +76,22 @@
                                     </div>
                                     <form method="POST" class="user">
                                         <div class="form-group">
-                                            <input type="email" name="useremail" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address...">
+                                            <input type="email" name="useremail" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" name="pass" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password">
+                                            <input type="password" name="pass" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
                                         </div>
 
-                                <!--    <a href="index.html" class="btn btn-primary btn-user btn-block">
+                                        <!--    <a href="index.html" class="btn btn-primary btn-user btn-block">
                                             Login
                                         </a> -->
 
                                         <input type="submit" name="submitlogin" class="btn btn-primary btn-user btn-block" value="Login">
-                                       
+
                                         <a class="btn btn-primary btn-user btn-block" href="forget.php">Forget Password</a>
-                                        
+
                                     </form>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -109,9 +116,9 @@
 
 </body>
 
-<?php 
-    mysqli_close($connection);
-    ob_end_flush();
+<?php
+mysqli_close($connection);
+ob_end_flush();
 ?>
 
 </html>

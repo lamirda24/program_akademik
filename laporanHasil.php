@@ -79,13 +79,15 @@ if (!isset($_SESSION['emailuser']))
                         <th>Alamat Siswa</th>
                         <th>Nomor Telepon</th>
                         <th>Nilai Akhir</th>
+
+
                     </tr>
                 </thead>
 
                 <tbody>
                     <?php
 
-                    $query = mysqli_query($connection, "select * from spk join siswa on spk.kode_siswa = siswa.kode_siswa join kelasdetail on kelasdetail.kode_siswa = siswa.kode_siswa join kelas on kelasdetail.kode_kelas = kelas.kode_kelas order by spk.hasil_spk desc");
+                    $query = mysqli_query($connection, "select * from spk join siswa on spk.kode_siswa = siswa.kode_siswa join kelasdetail on kelasdetail.kode_siswa = siswa.kode_siswa join kelas on kelasdetail.kode_kelas = kelas.kode_kelas order by length(spk.hasil_spk) asc, spk.hasil_spk desc");
 
                     $nomor = 1;
                     while ($row = mysqli_fetch_array($query)) { ?>
@@ -96,7 +98,7 @@ if (!isset($_SESSION['emailuser']))
                             <td><?php echo $row['nama_kelas'] . " " . $row['jurusan'] . " " . $row['nomor_kelas'] ?></td>
                             <td><?php echo $row['alamat_siswa']; ?></td>
                             <td><?php echo $row['notelp_siswa']; ?></td>
-                            <td><?php echo $row['hasil_spk']; ?></td>
+                            <td><?php echo round($row['hasil_spk'], 2); ?></td>
 
                         </tr>
 

@@ -68,127 +68,130 @@ if (!isset($_SESSION['emailuser']))
             <div class="row">
                 <div class="col-sm-1">
                 </div>
+                <?php if ($_SESSION['role'] != "siswa") : ?>
 
-                <div class="col-sm-10">
+                    <div class="col-sm-10">
 
-                    <div class="jumbotron jumbotron-fluid">
-                        <div class="container">
-                            <h1 class="display-4">Input Jadwal</h1>
+                        <div class="jumbotron jumbotron-fluid">
+                            <div class="container">
+                                <h1 class="display-4">Input Jadwal</h1>
+                            </div>
                         </div>
+                        <!--penutup jumbotron-->
+
+                        <form method="POST">
+                            <div class="form-group row">
+                                <label for="kelas" class="col-sm-2 col-form-label">Kelas</label>
+                                <div class="col-sm-10">
+                                    <select name="inputkelas" class="form-control" id="kelas">
+
+                                        <option>Kelas</option>
+                                        <?php while ($row = mysqli_fetch_array($kelas)) { ?>
+                                            <option value="<?php echo $row["kode_kelas"]; ?>">
+                                                <?php echo $row["nama_kelas"] ?>
+                                                <?php echo $row["jurusan"] ?>
+                                                <?php echo $row["nomor_kelas"] ?>
+
+                                            </option>
+
+                                        <?php } ?>
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class=" form-group row">
+                                <label for="semester" class="col-sm-2 col-form-label">Semester</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" required name="inputsemester">
+                                        <option value="Genap">Genap</option>
+                                        <option value="Ganjil">Ganjil</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="tahun" class="col-sm-2 col-form-label">Tahun</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" required name="inputtahun">
+                                        <option value="2017">2017</option>
+                                        <option value="2018">2018</option>
+                                        <option value="2019">2019</option>
+                                        <option value="2020">2020</option>
+                                        <option value="2021">2021</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="matpel" class="col-sm-2 col-form-label">Mata Pelajaran</label>
+                                <div class="col-sm-10">
+                                    <select name="inputmatpel" class="form-control" id="matpel">
+
+                                        <option>Mata Pelajaran</option>
+                                        <?php while ($row = mysqli_fetch_array($matapelajaran)) { ?>
+                                            <option value="<?php echo $row["kode_matpel"] ?>">
+                                                <?php echo $row["nama_matpel"] ?>
+                                            </option>
+                                        <?php } ?>
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="guru" class="col-sm-2 col-form-label">Guru</label>
+                                <div class="col-sm-10">
+                                    <select name="inputguru" class="form-control" id="guru">
+
+                                        <option>Guru</option>
+                                        <?php while ($row = mysqli_fetch_array($guru)) { ?>
+                                            <option value="<?php echo $row["kode_guru"] ?>">
+                                                <?php echo $row["nama_guru"] ?>
+                                            </option>
+                                        <?php } ?>
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="hari" class="col-sm-2 col-form-label">Hari</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" required name="inputhari">
+                                        <option value="Senin">Senin</option>
+                                        <option value="Selasa">Selasa</option>
+                                        <option value="Rabu">Rabu</option>
+                                        <option value="Kamis">Kamis</option>
+                                        <option value="Jumat">Jumat</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="jammulai" class="col-sm-2 col-form-label">Jam Mulai</label>
+                                <div class="col-sm-10">
+                                    <input type="time" class="form-control" name="inputjammulai" id="jammulai" placeholder="Input Min">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="jamselesai" class="col-sm-2 col-form-label">Jam Selesai</label>
+                                <div class="col-sm-10">
+                                    <input type="time" class="form-control" name="inputjamselesai" id="jamselesai" placeholder="Input Max ">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-10">
+                                    <input type="submit" class="btn btn-primary" value="Simpan" name="simpan">
+                                    <input type="button" class="btn btn-secondary" value="Batal" name="batal">
+                                </div>
+                            </div>
                     </div>
-                    <!--penutup jumbotron-->
+                    </form>
+                <?php endif; ?>
 
-                    <form method="POST">
-                        <div class="form-group row">
-                            <label for="kelas" class="col-sm-2 col-form-label">Kelas</label>
-                            <div class="col-sm-10">
-                                <select name="inputkelas" class="form-control" id="kelas">
-
-                                    <option>Kelas</option>
-                                    <?php while ($row = mysqli_fetch_array($kelas)) { ?>
-                                        <option value="<?php echo $row["kode_kelas"]; ?>">
-                                            <?php echo $row["nama_kelas"] ?>
-                                            <?php echo $row["jurusan"] ?>
-                                            <?php echo $row["nomor_kelas"] ?>
-
-                                        </option>
-
-                                    <?php } ?>
-
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class=" form-group row">
-                            <label for="semester" class="col-sm-2 col-form-label">Semester</label>
-                            <div class="col-sm-10">
-                                <select class="form-control" required name="inputsemester">
-                                    <option value="Genap">Genap</option>
-                                    <option value="Ganjil">Ganjil</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="tahun" class="col-sm-2 col-form-label">Tahun</label>
-                            <div class="col-sm-10">
-                                <select class="form-control" required name="inputtahun">
-                                    <option value="2017">2017</option>
-                                    <option value="2018">2018</option>
-                                    <option value="2019">2019</option>
-                                    <option value="2020">2020</option>
-                                    <option value="2021">2021</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="matpel" class="col-sm-2 col-form-label">Mata Pelajaran</label>
-                            <div class="col-sm-10">
-                                <select name="inputmatpel" class="form-control" id="matpel">
-
-                                    <option>Mata Pelajaran</option>
-                                    <?php while ($row = mysqli_fetch_array($matapelajaran)) { ?>
-                                        <option value="<?php echo $row["kode_matpel"] ?>">
-                                            <?php echo $row["nama_matpel"] ?>
-                                        </option>
-                                    <?php } ?>
-
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="guru" class="col-sm-2 col-form-label">Guru</label>
-                            <div class="col-sm-10">
-                                <select name="inputguru" class="form-control" id="guru">
-
-                                    <option>Guru</option>
-                                    <?php while ($row = mysqli_fetch_array($guru)) { ?>
-                                        <option value="<?php echo $row["kode_guru"] ?>">
-                                            <?php echo $row["nama_guru"] ?>
-                                        </option>
-                                    <?php } ?>
-
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="hari" class="col-sm-2 col-form-label">Hari</label>
-                            <div class="col-sm-10">
-                                <select class="form-control" required name="inputhari">
-                                    <option value="Senin">Senin</option>
-                                    <option value="Selasa">Selasa</option>
-                                    <option value="Rabu">Rabu</option>
-                                    <option value="Kamis">Kamis</option>
-                                    <option value="Jumat">Jumat</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="jammulai" class="col-sm-2 col-form-label">Jam Mulai</label>
-                            <div class="col-sm-10">
-                                <input type="time" class="form-control" name="inputjammulai" id="jammulai" placeholder="Input Min">
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="jamselesai" class="col-sm-2 col-form-label">Jam Selesai</label>
-                            <div class="col-sm-10">
-                                <input type="time" class="form-control" name="inputjamselesai" id="jamselesai" placeholder="Input Max ">
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-sm-10">
-                                <input type="submit" class="btn btn-primary" value="Simpan" name="simpan">
-                                <input type="button" class="btn btn-secondary" value="Batal" name="batal">
-                            </div>
-                        </div>
-                </div>
-                </form>
             </div>
 
     </div>

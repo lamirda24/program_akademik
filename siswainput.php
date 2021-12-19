@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 
 <?php
+ob_start();
+session_start();
+if (!isset($_SESSION['emailuser']))
+  header("location:login.php");
+if ($_SESSION['role'] != "admin") {
+  header("location:index.php");
+}
 include "includes/config.php";
 if (isset($_POST['simpan'])) {
   if (isset($_REQUEST['inputkode'])) {
@@ -17,8 +24,10 @@ if (isset($_POST['simpan'])) {
   $nama_siswa = $_POST['inputnama'];
   $notelp_siswa = $_POST['inputnotelp'];
   $alamat_siswa = ($_POST['inputalamat']);
+  $email_siswa = ($_POST['email_siswa']);
 
-  mysqli_query($connection, "insert into siswa values('','$kode_siswa','$nama_siswa','$notelp_siswa','$alamat_siswa')");
+
+  mysqli_query($connection, "insert into siswa values('','$kode_siswa','$nama_siswa','$notelp_siswa','$alamat_siswa','$email_siswa')");
   header("location:siswainput.php");
 }
 ?>
@@ -32,12 +41,8 @@ if (isset($_POST['simpan'])) {
   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 </head>
 
-<?php
-ob_start();
-session_start();
-if (!isset($_SESSION['emailuser']))
-  header("location:login.php");
-?>
+
+
 <?php include "header.php"; ?>
 
 <div class="container-fluid">
@@ -84,6 +89,12 @@ if (!isset($_SESSION['emailuser']))
               <label for="alamat_siswa" class="col-sm-2 col-form-label">Alamat </label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" name="inputalamat" id="alamat_siswa" placeholder="Input Alamat Siswa ">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="email_siswa" class="col-sm-2 col-form-label">Email </label>
+              <div class="col-sm-10">
+                <input type="email" class="form-control" name="email_siswa" id="email_siswa" placeholder="Input Email Siswa">
               </div>
             </div>
 
@@ -136,6 +147,7 @@ if (!isset($_SESSION['emailuser']))
             <th>Nama </th>
             <th>No Telp </th>
             <th>Alamat</th>
+            <th>Email</th>
             <th colspan="2" style="text-align: center">Action</th>
           </tr>
         </thead>
@@ -157,6 +169,8 @@ if (!isset($_SESSION['emailuser']))
               <td><?php echo $row['nama_siswa']; ?></td>
               <td><?php echo $row['notelp_siswa']; ?></td>
               <td><?php echo $row['alamat_siswa']; ?></td>
+              <td><?php echo $row['email_siswa']; ?></td>
+
               <!-- untuk icon edit dan delete -->
               <td>
                 <a href="siswaedit.php?ubah=<?php echo $row["kode_siswa"] ?>" class="btn btn-success btn-sm" title="Edit">

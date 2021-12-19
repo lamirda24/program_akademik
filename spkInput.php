@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 
 <?php
+session_start();
+if (!isset($_SESSION['kodeuser'])) {
+    header("location:login.php");
+}
 include "includes/config.php";
 $siswa = mysqli_query($connection, "select * from siswa");
+$sess = $_SESSION['kodeuser'];
 if (isset($_POST['simpan'])) {
-    if (isset($_REQUEST['kode_siswa'])) {
-        $kode_siswa = $_REQUEST['kode_siswa'];
+    if ($_SESSION['role'] == "siswa") {
+        $kode_siswa = $sess;
     } else {
-?> <h1>Anda Harus Mengisi Data</h1>
+        if (isset($_REQUEST['kode_siswa'])) {
+            $kode_siswa = $_SESSION['kodeuser'];
+        } else {
+?>
+            <h1>Anda Harus Mengisi Data</h1>
 <?php
-        die("anda harus memasukkan datanya");
+            die("anda harus memasukkan datanya");
+        }
     }
     $c1 = $_POST['c1'];
     $c2 = $_POST['c2'];
@@ -38,9 +48,6 @@ if (isset($_POST['simpan'])) {
 
 <?php
 ob_start();
-session_start();
-if (!isset($_SESSION['emailuser']))
-    header("location:login.php");
 ?>
 <?php include "header.php"; ?>
 
@@ -62,20 +69,22 @@ if (!isset($_SESSION['emailuser']))
                     <!--penutup jumbotron-->
 
                     <form method="POST">
-                        <div class="form-group row">
-                            <label for="kode_siswa" class="col-sm-2 col-form-label">Kode Siswa </label>
-                            <div class="col-sm-10">
-                                <select name="kode_siswa" class="form-control" id="kode_siswa">
-                                    <option>Siswa</option>
-                                    <?php while ($row = mysqli_fetch_array($siswa)) { ?>
-                                        <option value="<?php echo $row["kode_siswa"] ?>">
-                                            <?php echo $row["nama_siswa"] ?>
-                                        </option>
-                                    <?php } ?>
+                        <?php if ($_SESSION['role'] != "siswa") : ?>
+                            <div class="form-group row">
+                                <label for="kode_siswa" class="col-sm-2 col-form-label">Kode Siswa </label>
+                                <div class="col-sm-10">
+                                    <select name="kode_siswa" class="form-control" id="kode_siswa">
+                                        <option>Siswa</option>
+                                        <?php while ($row = mysqli_fetch_array($siswa)) { ?>
+                                            <option value="<?php echo $row["kode_siswa"] ?>">
+                                                <?php echo $row["nama_siswa"] ?>
+                                            </option>
+                                        <?php } ?>
 
-                                </select>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+                        <?php endif; ?>
 
                         <div class="form-group row">
                             <label for="nama_siswa" class="col-sm-2 col-form-label">Pendapatan Orangtua</label>
@@ -124,15 +133,17 @@ if (!isset($_SESSION['emailuser']))
 
             <div class="jumbotron jumbotron-fluid">
                 <div class="container">
-                    <h1 class="display-4">Data Siswa</h1>
+                    <h1 class="display-4">Data Input</h1>
                 </div>
             </div>
             <!--penutup jumbotron-->
 
+            <?php if ($_SESSION['role'] != "siswa") : ?>
 
-            <div class="form-group row mb-2 ml-2">
-                <a class="col-sm-1 btn btn-success" value="Hasil" href="hitungSpk.php">Hasil</a>
-            </div>
+                <div class="form-group row mb-2 ml-2">
+                    <a class="col-sm-1 btn btn-success" value="Hasil" href="hitungSpk.php">Hasil</a>
+                </div>
+            <?php endif ?>
 
 
             <table class="table table success">
@@ -149,8 +160,12 @@ if (!isset($_SESSION['emailuser']))
 
                 <tbody>
                     <?php
+                    if ($_SESSION['role'] != "siswa") {
+                        $query = mysqli_query($connection, "select * from spk join siswa on spk.kode_siswa = siswa.kode_siswa");
+                    } else {
+                        $query = mysqli_query($connection, "select * from spk join siswa on spk.kode_siswa = siswa.kode_siswa where siswa.kode_siswa='$sess'");
+                    }
 
-                    $query = mysqli_query($connection, "select * from spk join siswa on spk.kode_siswa = siswa.kode_siswa");
 
                     $nomor = 1;
                     while ($row = mysqli_fetch_array($query)) { ?>

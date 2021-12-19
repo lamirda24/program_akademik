@@ -19,6 +19,9 @@ ob_start();
 session_start();
 if (!isset($_SESSION['emailuser']))
     header("location:login.php");
+
+$sess = $_SESSION['kodeuser'];
+
 ?>
 <?php include "header.php"; ?>
 
@@ -67,8 +70,6 @@ if (!isset($_SESSION['emailuser']))
 
 
             </div>
-
-
             <table class="table table success">
                 <thead class="thead-dark">
                     <tr>
@@ -83,8 +84,11 @@ if (!isset($_SESSION['emailuser']))
 
                 <tbody>
                     <?php
-
-                    $query = mysqli_query($connection, "select * from spk join siswa on spk.kode_siswa = siswa.kode_siswa join kelasdetail on kelasdetail.kode_siswa = siswa.kode_siswa join kelas on kelasdetail.kode_kelas = kelas.kode_kelas ");
+                    if ($_SESSION['role'] != "siswa") {
+                        $query = mysqli_query($connection, "select * from spk join siswa on spk.kode_siswa = siswa.kode_siswa join kelasdetail on kelasdetail.kode_siswa = siswa.kode_siswa join kelas on kelasdetail.kode_kelas = kelas.kode_kelas ");
+                    } else {
+                        $query = mysqli_query($connection, "select * from spk join siswa on spk.kode_siswa = siswa.kode_siswa join kelasdetail on kelasdetail.kode_siswa = siswa.kode_siswa join kelas on kelasdetail.kode_kelas = kelas.kode_kelas where spk.kode_siswa='$sess'");
+                    }
 
                     $nomor = 1;
                     while ($row = mysqli_fetch_array($query)) { ?>
