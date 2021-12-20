@@ -34,6 +34,8 @@ while ($akun = mysqli_fetch_assoc($queryUser)) {
   $checkEmail[] = $akun['email_user'];
 }
 
+$emailAkun = mysqli_query($connection, "SELECT email_$role FROM $role");
+
 if (isset($_GET['inputrole'])) {
   $query = mysqli_query($connection, "SELECT * FROM " . $_GET['inputrole'] . "");
 }
@@ -101,9 +103,9 @@ if (!isset($_SESSION['emailuser']))
               <div class="col-sm-10">
                 <select class="form-control" required name="adminnama" id="adminnama">
                   <option value="">Select...</option>
-                  <?php while ($rownama = mysqli_fetch_assoc($query)) {
-                    if (!in_array($rownama["$namaU"], $checkNama)) { ?>
-                      <option value="<?= $rownama["$namaU"]; ?>"> <?= $rownama["$namaU"]; ?></option>
+                  <?php while ($rowemail = mysqli_fetch_assoc($emailAkun)) {
+                    if (!in_array($rowemail["email_$role"], $checkEmail)) { ?>
+                      <option value="<?= $rowemail["email_$role"]; ?>"> <?= $rowemail["email_$role"]; ?></option>
                     <?php } ?>
 
                   <?php } ?>
@@ -115,7 +117,16 @@ if (!isset($_SESSION['emailuser']))
             <div class="form-group row">
               <label for="adminalamat" class="col-sm-2 col-form-label">Email User</label>
               <div class="col-sm-10">
-                <input type="email" class="form-control" name="inputemail" id="inputemail" placeholder="Input email ">
+                <select class="form-control" required name="inputEmail" id="inputEmail">
+                  <option value="">Select...</option>
+                  <?php while ($rownama = mysqli_fetch_assoc($query)) {
+                    if (!in_array($rownama["email_$role"], $checkEmail)) { ?>
+                      <option value="<?= $rownama["$namaU"]; ?>"> <?= $rownama["$namaU"]; ?></option>
+                    <?php } ?>
+
+                  <?php } ?>
+
+                </select>
               </div>
             </div>
 

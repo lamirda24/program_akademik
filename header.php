@@ -130,11 +130,10 @@ if (!isset($_SESSION['kodeuser'])) {
                             <a class="collapse-item" href="laporanSeluruhSiswa.php">Laporan Siswa</a>
                             <a class="collapse-item" href="laporansiswa.php">Laporan Kelas</a>
                         <?php endif; ?>
-                        <a class="collapse-item" href="laporanNilai.php">Laporan Nilai</a>
+                        <a class="collapse-item" href="<?= $_SESSION['role'] == 'siswa' ? 'nilaiKelasSiswa.php' : 'laporanNilai.php' ?>">Laporan Nilai</a>
                         <?php if ($_SESSION['role'] != "siswa") : ?>
                             <a class="collapse-item" href="laporanGuru.php">Laporan Guru</a>
                         <?php endif; ?>
-
                         <a class="collapse-item" href="laporanPengumumunan.php">Laporan Pengumuman</a>
                         <a class="collapse-item" href="laporanSpk.php">Laporan Hasil</a>
                         <?php if ($_SESSION['role'] != "siswa") : ?>

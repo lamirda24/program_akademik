@@ -1,13 +1,27 @@
 <!DOCTYPE html>
 
 <?php
+session_start();
 include "includes/config.php";
-$kode_kelas = $_GET['kelas'];
-$kode_siswa = $_GET['siswa'];
-$q = mysqli_query($connection, "SELECT * FROM nilai where kelas='$kode_kelas' and siswa='$kode_siswa'");
-$resq = mysqli_fetch_array($q);
-$q1 = mysqli_query($connection, "SELECT nama_siswa from siswa where kode_siswa='$kode_siswa'");
-$nama_siswa = mysqli_fetch_row($q1);
+if ($_SESSION['role'] != "siswa") {
+
+
+    $kode_kelas = $_GET['kelas'];
+    $kode_siswa = $_GET['siswa'];
+    $q = mysqli_query($connection, "SELECT * FROM nilai where kelas='$kode_kelas' and siswa='$kode_siswa'");
+    $resq = mysqli_fetch_array($q);
+    $q1 = mysqli_query($connection, "SELECT nama_siswa from siswa where kode_siswa='$kode_siswa'");
+    $nama_siswa = mysqli_fetch_row($q1);
+} else {
+    $kode_siswa = $_SESSION['kodeuser'];
+    $qKelas = mysqli_query($connection, "SELECT * FROM kelasdetail where kode_siswa='$kode_siswa'");
+    $resKelas = mysqli_fetch_assoc($qKelas);
+    $kode_kelas = $resKelas['kode_kelas'];
+    $q = mysqli_query($connection, "SELECT * FROM nilai where kelas='$kode_kelas' and siswa='$kode_siswa'");
+    $resq = mysqli_fetch_array($q);
+    $q1 = mysqli_query($connection, "SELECT nama_siswa from siswa where kode_siswa='$kode_siswa'");
+    $nama_siswa = mysqli_fetch_row($q1);
+}
 
 
 
@@ -25,7 +39,6 @@ $nama_siswa = mysqli_fetch_row($q1);
 
 <?php
 ob_start();
-session_start();
 if (!isset($_SESSION['emailuser']))
     header("location:login.php");
 ?>
