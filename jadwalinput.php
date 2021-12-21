@@ -19,8 +19,8 @@ if (isset($_POST['simpan'])) {
     $nama_matpel = $nama_matpel[2];
     $resGuru = mysqli_query($connection, "select * from guru where kode_guru='$guru'");
 
-    $nama_guru = mysqli_fetch_row($resGuru);
-    $nama_guru = $nama_guru[1];
+    $ng = mysqli_fetch_assoc($resGuru);
+    $nama_guru = $ng['nama_guru'];
 
 
     // echo $nama_guru;
@@ -32,10 +32,11 @@ if (isset($_POST['simpan'])) {
 
 
 
+    // echo "INSERT INTO `jadwal` (`id`, `kelas`, `kode_kelas`, `semester`, `tahun`, `matpel`, `kode_matpel`, `kode_guru`, `guru`, `hari`, `jammulai`, `jamselesai`) VALUES (NULL, '$resKelas', '$kelas', '$semester', '$tahun', '$nama_matpel', '$matpel', '$guru', '$nama_guru', '$hari', '$jammulai', '$jamselesai')";
+    // die;
 
+    mysqli_query($connection, "INSERT INTO `jadwal` (`id`, `nama_kelas`, `kode_kelas`, `semester`, `tahun`, `matpel`, `kode_matpel`, `kode_guru`, `guru`, `hari`, `jammulai`, `jamselesai`) VALUES (NULL, '$resKelas', '$kelas', '$semester', '$tahun', '$nama_matpel', '$matpel', '$guru', '$nama_guru', '$hari', '$jammulai', '$jamselesai')");
 
-    mysqli_query($connection, "INSERT INTO `jadwal` (`id`, `kelas`, `kode_kelas`, `semester`, `tahun`, `matpel`, `kode_matpel`, `kode_guru`, `guru`, `hari`, `jammulai`, `jamselesai`) VALUES (NULL, '$resKelas', '$kelas', '$semester', '$tahun', '$nama_matpel', '$mapel', '$guru', '$nama_guru', '$hari', '$jammulai', '$jamselesai')");
-    // mysqli_query($connection, "insert into jadwal values('','$resKelas','$kelas','$semester','$tahun','$nama_matpel','$matpel','$guru',$nama_guru','$hari','$jammulai','$jamselesai')");
     header("location:jadwalinput.php");
 }
 $matapelajaran = mysqli_query($connection, "select * from matapelajaran");
@@ -249,7 +250,7 @@ if (!isset($_SESSION['emailuser']))
             while ($row = mysqli_fetch_array($query)) { ?>
                 <tr>
                     <td><?php echo $nomor; ?></td>
-                    <td><?php echo $row['kelas']; ?></td>
+                    <td><?php echo $row['nama_kelas']; ?></td>
                     <td><?php echo $row['semester']; ?></td>
                     <td><?php echo $row['tahun']; ?></td>
                     <td><?php echo $row['matpel']; ?></td>
@@ -279,7 +280,7 @@ if (!isset($_SESSION['emailuser']))
                     </td>
 
                     <td>
-                        <a href="jadwalhapus.php?hapus=<?php echo $row['kelas'] ?>&hapus2=<?php echo $row['matpel']; ?>" class="btn btn-danger btn-sm" title="Delete">
+                        <a href="jadwalhapus.php?hapus=<?php echo $row['id'] ?>" class="btn btn-danger btn-sm" title="Delete">
 
                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />

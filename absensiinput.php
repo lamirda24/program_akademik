@@ -14,7 +14,7 @@ if (isset($_POST['simpan'])) {
     header("location:absensiinput.php?kelas=$kodeKelas&mapel=$kodeMatpel");
 }
 
-$siswa = mysqli_query($connection, "select * from kelasdetail where kode_kelas='$kodeKelas'");
+$siswa = mysqli_query($connection, "select * from kelasdetail  join siswa on kelasdetail.kode_siswa = siswa.kode_siswa where kode_kelas='$kodeKelas'");
 $kelas = mysqli_query($connection, "select * from kelas where kode_kelas='$kodeKelas'");
 $absensi = mysqli_query($connection, "select * from absensi where kelas='" . $_GET['kelas'] . "'");
 $mapel = mysqli_query($connection, "select nama_matpel from matapelajaran where kode_matpel='$kodeMatpel'");
@@ -80,7 +80,7 @@ if (!isset($_SESSION['emailuser']))
                             <div class="col-sm-10">
                                 <select name="siswa" class="form-control" id="kodebarang">
                                     <option>....</option>
-                                    <?php while ($row = mysqli_fetch_array($siswa)) { ?>
+                                    <?php while ($row = mysqli_fetch_assoc($siswa)) { ?>
                                         <option value="<?php echo $row["kode_siswa"] ?>">
                                             <?php echo $row["nama_siswa"] ?>
                                         </option>

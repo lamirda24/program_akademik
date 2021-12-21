@@ -20,7 +20,7 @@ if (isset($_POST['simpan'])) {
   $email_guru = ($_POST['email_guru']);
 
 
-  mysqli_query($connection, "insert into guru values('$kode_guru','$nama_guru','$notelp_guru','$alamat_guru','$email_guru')");
+  mysqli_query($connection, "insert into guru values('','$kode_guru','$nama_guru','$notelp_guru','$alamat_guru','$email_guru')");
   header("location:guruinput.php");
 }
 ?>
@@ -89,9 +89,9 @@ if (!isset($_SESSION['emailuser']))
               </div>
             </div>
             <div class="form-group row">
-              <label for="email_guru" class="col-sm-2 col-form-label">Alamat </label>
+              <label for="email_guru" class="col-sm-2 col-form-label">Email </label>
               <div class="col-sm-10">
-                <input type="email" class="form-control" name="email_guru" id="email_guru" placeholder="Input Alamat Guru ">
+                <input type="email" class="form-control" name="email_guru" id="email_guru" placeholder="Input Email Guru ">
               </div>
             </div>
 

@@ -7,7 +7,7 @@ include 'koneksi.php';
 session_start();
 
 
-$query = mysqli_query($koneksi, "select * from spk join siswa on spk.kode_siswa = siswa.kode_siswa join kelasdetail on kelasdetail.kode_siswa = siswa.kode_siswa join kelas on kelasdetail.kode_kelas = kelas.kode_kelas order by spk.hasil_spk DESC ");
+$query = mysqli_query($koneksi, "select * from spk join siswa on spk.kode_siswa = siswa.kode_siswa join kelasdetail on kelasdetail.kode_siswa = siswa.kode_siswa join kelas on kelasdetail.kode_kelas = kelas.kode_kelas order by length(spk.hasil_spk) asc, spk.hasil_spk desc ");
 
 
 ?>
@@ -63,6 +63,8 @@ $query = mysqli_query($koneksi, "select * from spk join siswa on spk.kode_siswa 
 							<th>Alamat Siswa</th>
 							<th>Nomor Telepon</th>
 							<th>Hasil Akhir</th>
+							<th>Status</th>
+
 
 
 						</tr>
@@ -77,6 +79,14 @@ $query = mysqli_query($koneksi, "select * from spk join siswa on spk.kode_siswa 
 								<td><?php echo $row['alamat_siswa']; ?></td>
 								<td><?php echo $row['notelp_siswa']; ?></td>
 								<td><?php echo round($row['hasil_spk'], 2); ?></td>
+								<td><?php if ($row['hasil_spk'] == 0) {
+										echo "-";
+									} else if ($row['hasil_spk'] >= 8) {
+										echo "Lolos";
+									} else {
+										echo "Tidak Lolos";
+									} ?></td>
+
 
 							</tr>
 						<?php

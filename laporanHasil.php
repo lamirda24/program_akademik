@@ -79,6 +79,8 @@ if (!isset($_SESSION['emailuser']))
                         <th>Alamat Siswa</th>
                         <th>Nomor Telepon</th>
                         <th>Nilai Akhir</th>
+                        <th>Status</th>
+
 
 
                     </tr>
@@ -99,6 +101,14 @@ if (!isset($_SESSION['emailuser']))
                             <td><?php echo $row['alamat_siswa']; ?></td>
                             <td><?php echo $row['notelp_siswa']; ?></td>
                             <td><?php echo round($row['hasil_spk'], 2); ?></td>
+                            <td><?php if ($row['hasil_spk'] == 0) {
+                                    echo "-";
+                                } else if ($row['hasil_spk'] >= 8) {
+                                    echo "Lolos";
+                                } else {
+                                    echo "Tidak Lolos";
+                                } ?></td>
+
 
                         </tr>
 

@@ -115,7 +115,7 @@ $sess = $_SESSION['kodeuser'];
 
                                 <td><?php if ($row['hasil_spk'] == 0) {
                                         echo "-";
-                                    } else if ($row['hasil_spk'] == max($arrNilai)) {
+                                    } else if ($row['hasil_spk'] >= 8) {
                                         echo "Lolos";
                                     } else {
                                         echo "Tidak Lolos";

@@ -96,7 +96,7 @@ if (!isset($_SESSION['emailuser']))
             <div class="form-group row">
               <label for="email_guru" class="col-sm-2 col-form-label">Email</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" name="email_guru" id="email_guru" value="<?php echo $rowedit["email_guru"] ?>">
+                <input type="email" class="form-control" name="email_guru" id="email_guru" value="<?php echo $rowedit["email_guru"] ?>">
               </div>
             </div>
 
