@@ -68,9 +68,9 @@ if (!isset($_SESSION['emailuser']))
                         <?php
                         if (isset($_POST["kirim"])) {
                             $search = $_POST['search'];
-                            $query = mysqli_query($connection, "select * from kelasdetail where nama_siswa like '%" . $search . "%' and kode_kelas ='$kode_kelas'");
+                            $query = mysqli_query($connection, "select * from kelasdetail join siswa on kelasdetail.kode_siswa = siswa.kode_siswa where nama_siswa like '%" . $search . "%' and kode_kelas ='$kode_kelas'");
                         } else {
-                            $query = mysqli_query($connection, "select * from kelasdetail where kode_kelas ='$kode_kelas'");
+                            $query = mysqli_query($connection, "select * from kelasdetail join siswa on kelasdetail.kode_siswa = siswa.kode_siswa where kode_kelas ='$kode_kelas' ");
                         }
                         $nomor = 1;
                         while ($row = mysqli_fetch_array($query)) { ?>
@@ -88,13 +88,15 @@ if (!isset($_SESSION['emailuser']))
                                             <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
                                         </svg>
                                     </a>
-                                    <a href="printNilaiKelas.php?kelas=<?php echo $row["kode_kelas"] ?>&siswa=<?= $row["kode_siswa"] ?>" class=" ml-2 btn btn-warning btn-sm" title="Edit">
+                                    <?php if ($_SESSION['role'] == "admin") : ?>
+                                        <a href="printNilaiKelas.php?kelas=<?php echo $row["kode_kelas"] ?>&siswa=<?= $row["kode_siswa"] ?>" class=" ml-2 btn btn-warning btn-sm" title="Print">
 
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
-                                            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
-                                            <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z" />
-                                        </svg>
-                                    </a>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
+                                                <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
+                                                <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z" />
+                                            </svg>
+                                        </a>
+                                    <?php endif; ?>
                                 </td>
 
 

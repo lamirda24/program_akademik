@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 
 <?php
+session_start();
+$kodeuser = $_SESSION['kodeuser'];
 include "includes/config.php";
 if (isset($_POST['simpan'])) {
     $matpel = $_POST['inputmatpel'];
@@ -31,7 +33,6 @@ $kelas = mysqli_query($connection, "select * from kelas");
 
 <?php
 ob_start();
-session_start();
 if (!isset($_SESSION['emailuser']))
     header("location:login.php");
 ?>
@@ -89,17 +90,27 @@ if (!isset($_SESSION['emailuser']))
                 <tbody>
                     <?php
                     if (isset($_POST["kirim"])) {
-                        $search = $_POST['search'];
-                        $query = mysqli_query($connection, "select * from jadwal
-        where kelas like '%" . $search . "%'");
+                        if ($_SESSION['role'] == "guru") {
+
+                            $search = $_POST['search'];
+                            $query = mysqli_query($connection, "select * from jadwal where nama_kelas like '%" . $search . "%'");
+                        } else {
+                            $search = $_POST['search'];
+                            $query = mysqli_query($connection, "select * from jadwal where nama_kelas like '%" . $search . "%'");
+                        }
                     } else {
-                        $query = mysqli_query($connection, "select * from jadwal");
+                        if ($_SESSION['role'] == "guru") {
+                            $query = mysqli_query($connection, "select * from jadwal where kode_guru='$kodeuser'");
+                        } else {
+
+                            $query = mysqli_query($connection, "select * from jadwal");
+                        }
                     }
                     $nomor = 1;
                     while ($row = mysqli_fetch_array($query)) { ?>
                         <tr>
                             <td><?php echo $nomor; ?></td>
-                            <td><?php echo $row['kelas']; ?></td>
+                            <td><?php echo $row['nama_kelas']; ?></td>
                             <td><?php echo $row['semester']; ?></td>
                             <td><?php echo $row['tahun']; ?></td>
                             <td><?php echo $row['matpel']; ?></td>

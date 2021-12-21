@@ -3,26 +3,28 @@
 <?php
 session_start();
 include "includes/config.php";
-if ($_SESSION['role'] != "siswa") {
 
 
-    $kode_kelas = $_GET['kelas'];
-    $kode_siswa = $_GET['siswa'];
-    $q = mysqli_query($connection, "SELECT * FROM nilai where kelas='$kode_kelas' and siswa='$kode_siswa'");
-    $resq = mysqli_fetch_array($q);
-    $q1 = mysqli_query($connection, "SELECT nama_siswa from siswa where kode_siswa='$kode_siswa'");
-    $nama_siswa = mysqli_fetch_row($q1);
-} else {
+if ($_SESSION['role'] == "siswa") {
+
     $kode_siswa = $_SESSION['kodeuser'];
     $qKelas = mysqli_query($connection, "SELECT * FROM kelasdetail where kode_siswa='$kode_siswa'");
     $resKelas = mysqli_fetch_assoc($qKelas);
     $kode_kelas = $resKelas['kode_kelas'];
     $q = mysqli_query($connection, "SELECT * FROM nilai where kelas='$kode_kelas' and siswa='$kode_siswa'");
-    $resq = mysqli_fetch_array($q);
+
+    $q1 = mysqli_query($connection, "SELECT nama_siswa from siswa where kode_siswa='$kode_siswa'");
+    $nama_siswa = mysqli_fetch_row($q1);
+} else {
+
+    $kode_kelas = $_GET['kelas'];
+    $kode_siswa = $_GET['siswa'];
+    $q = mysqli_query($connection, "SELECT * FROM nilai join siswa on nilai.kode_siswa = siswa.kode_siswa where kode_kelas='$kode_kelas' and nilai.kode_siswa='$kode_siswa'");
     $q1 = mysqli_query($connection, "SELECT nama_siswa from siswa where kode_siswa='$kode_siswa'");
     $nama_siswa = mysqli_fetch_row($q1);
 }
 
+// echo "SELECT * FROM nilai join siswa on nilai.kode_siswa = siswa.kode_siswa where kode_kelas='$kode_kelas' and nilai.kode_siswa='$kode_siswa'";
 
 
 ?>
@@ -73,12 +75,14 @@ if (!isset($_SESSION['emailuser']))
 
                 </div>
                 <div class="col-xl-2 mb-2">
-                    <a href="printNilaiKelas.php?kelas=<?php echo $kode_kelas ?>&siswa=<?= $kode_siswa ?>" class="btn btn-warning btn-sm" title="Edit">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
-                            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
-                            <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z" />
-                        </svg> Print
-                    </a>
+                    <?php if ($_SESSION['kodeuser'] != "siswa") : ?>
+                        <a href="printNilaiKelas.php?kelas=<?php echo $kode_kelas ?>&siswa=<?= $kode_siswa ?>" class="btn btn-warning btn-sm" title="Print">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
+                                <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
+                                <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z" />
+                            </svg> Print
+                        </a>
+                    <?php endif; ?>
                 </div>
 
 
@@ -103,10 +107,11 @@ if (!isset($_SESSION['emailuser']))
                     <?php
 
                     $nomor = 1;
-                    while ($row = mysqli_fetch_array($q)) { ?>
+                    while ($row = mysqli_fetch_assoc($q)) {
+                    ?>
                         <tr>
                             <td><?php echo $nomor; ?></td>
-                            <td><?php echo $row['kodematpel']; ?></td>
+                            <td><?php echo $row['kode_kelas']; ?></td>
                             <td><?php echo $row['matpel']; ?></td>
                             <td><?php echo $row['tugas']; ?></td>
                             <td><?php echo $row['uts']; ?></td>

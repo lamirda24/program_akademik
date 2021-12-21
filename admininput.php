@@ -19,7 +19,7 @@ if (isset($_POST['simpan'])) {
   }
 
   $adminNAMA = $_POST['adminnama'];
-  $adminEMAIL = $_POST['inputemail'];
+  $adminEMAIL = $_POST['inputEmail'];
   $adminPASSWORD = md5($_POST['inputpassword']);
 
   mysqli_query($connection, "insert into akun_user values('','$adminID','$adminNAMA','$adminEMAIL','$adminPASSWORD', '$role')");
@@ -103,9 +103,9 @@ if (!isset($_SESSION['emailuser']))
               <div class="col-sm-10">
                 <select class="form-control" required name="adminnama" id="adminnama">
                   <option value="">Select...</option>
-                  <?php while ($rowemail = mysqli_fetch_assoc($emailAkun)) {
-                    if (!in_array($rowemail["email_$role"], $checkEmail)) { ?>
-                      <option value="<?= $rowemail["email_$role"]; ?>"> <?= $rowemail["email_$role"]; ?></option>
+                  <?php while ($rownama = mysqli_fetch_assoc($query)) {
+                    if (!in_array($rownama["email_$role"], $checkEmail)) { ?>
+                      <option value="<?= $rownama["$namaU"]; ?>"> <?= $rownama["$namaU"]; ?></option>
                     <?php } ?>
 
                   <?php } ?>
@@ -119,9 +119,9 @@ if (!isset($_SESSION['emailuser']))
               <div class="col-sm-10">
                 <select class="form-control" required name="inputEmail" id="inputEmail">
                   <option value="">Select...</option>
-                  <?php while ($rownama = mysqli_fetch_assoc($query)) {
-                    if (!in_array($rownama["email_$role"], $checkEmail)) { ?>
-                      <option value="<?= $rownama["$namaU"]; ?>"> <?= $rownama["$namaU"]; ?></option>
+                  <?php while ($rowemail = mysqli_fetch_assoc($emailAkun)) {
+                    if (!in_array($rowemail["email_$role"], $checkEmail)) { ?>
+                      <option value="<?= $rowemail["email_$role"]; ?>"> <?= $rowemail["email_$role"]; ?></option>
                     <?php } ?>
 
                   <?php } ?>

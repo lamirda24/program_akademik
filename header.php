@@ -54,7 +54,7 @@ if (!isset($_SESSION['kodeuser'])) {
 
             <!-- Divider -->
             <hr class="sidebar-divider">
-            <?php if ($_SESSION['role'] != "siswa") : ?>
+            <?php if ($_SESSION['role'] == "admin") : ?>
 
                 <!-- Nav Item - Pages Collapse Menu -->
                 <li class="nav-item">
@@ -76,29 +76,44 @@ if (!isset($_SESSION['kodeuser'])) {
                 </li>
             <?php endif; ?>
 
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    <i class="fas fa-book" style="color:#ffffff"></i>
-                    <span>SPK Beasiswa</span>
-                </a>
-                <div id="collapseOne" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Daftar Menu :</h6>
-                        <?php if ($_SESSION['role'] != "siswa") : ?>
+            <?php if ($_SESSION['role'] == "admin") : ?>
+                <!-- Nav Item - Utilities Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <i class="fas fa-book" style="color:#ffffff"></i>
+                        <span>SPK Beasiswa</span>
+                    </a>
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Daftar Menu :</h6>
                             <a class="collapse-item" href="kriteriainput.php">Data Kriteria</a>
                             <a class="collapse-item" href="parameterinput.php">Data Parameter</a>
                             <a class="collapse-item" href="bobotnilaiinput.php">Data Bobot</a>
-                        <?php endif; ?>
-
-                        <a class="collapse-item" href="spkInput.php">Pengajuan Beasiswa</a>
+                            <a class="collapse-item" href="spkInput.php">Pengajuan Beasiswa</a>
 
 
 
+                        </div>
                     </div>
-                </div>
-            </li>
-            <?php if ($_SESSION['role'] != "siswa") : ?>
+                </li>
+            <?php endif; ?>
+            <?php if ($_SESSION['role'] == "siswa") : ?>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <i class="fas fa-book" style="color:#ffffff"></i>
+                        <span>SPK Beasiswa</span>
+                    </a>
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Daftar Menu :</h6>
+                            <a class="collapse-item" href="spkInput.php">Pengajuan Beasiswa</a>
+                        </div>
+                    </div>
+                </li>
+            <?php endif; ?>
+
+            <?php if ($_SESSION['role'] == "admin") { ?>
 
                 <!-- Nav Item - Utilities Collapse Menu -->
                 <li class="nav-item">
@@ -115,7 +130,24 @@ if (!isset($_SESSION['kodeuser'])) {
                         </div>
                     </div>
                 </li>
-            <?php endif; ?>
+            <?php } ?>
+            <?php if ($_SESSION['role'] == "guru") { ?>
+
+                <!-- Nav Item - Utilities Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-map-marked-alt" style="color:#ffffff"></i>
+                        <span>Transaction</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Daftar Table :</h6>
+                            <a class="collapse-item" href="nilaiKelas.php">Nilai</a>
+                            <a class="collapse-item" href="daftarabsensi.php">Absensi</a>
+                        </div>
+                    </div>
+                </li>
+            <?php } ?>
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
@@ -125,22 +157,25 @@ if (!isset($_SESSION['kodeuser'])) {
                 </a>
                 <div id="collapseUtilitie" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <?php if ($_SESSION['role'] != "siswa") : ?>
-                            <h6 class="collapse-header">Daftar Table :</h6>
+                        <h6 class="collapse-header">Daftar Table :</h6>
+                        <?php if ($_SESSION['role'] == "admin" || $_SESSION['role'] == "kepsek") : ?>
                             <a class="collapse-item" href="laporanSeluruhSiswa.php">Laporan Siswa</a>
                             <a class="collapse-item" href="laporansiswa.php">Laporan Kelas</a>
-                        <?php endif; ?>
-                        <a class="collapse-item" href="<?= $_SESSION['role'] == 'siswa' ? 'nilaiKelasSiswa.php' : 'laporanNilai.php' ?>">Laporan Nilai</a>
-                        <?php if ($_SESSION['role'] != "siswa") : ?>
+                            <a class="collapse-item" href="<?= $_SESSION['role'] == 'siswa' ? 'nilaiKelasSiswa.php' : 'laporanNilai.php' ?>">Laporan Nilai</a>
                             <a class="collapse-item" href="laporanGuru.php">Laporan Guru</a>
-                        <?php endif; ?>
-                        <a class="collapse-item" href="laporanPengumumunan.php">Laporan Pengumuman</a>
-                        <a class="collapse-item" href="laporanSpk.php">Laporan Hasil</a>
-                        <?php if ($_SESSION['role'] != "siswa") : ?>
-
+                            <a class="collapse-item" href="laporanPengumumunan.php">Laporan Pengumuman</a>
+                            <a class="collapse-item" href="laporanSpk.php">Laporan Hasil</a>
                             <a class="collapse-item" href="laporanAbsensi.php">Laporan Absensi</a>
                         <?php endif; ?>
-
+                        <?php if ($_SESSION['role'] == "guru") : ?>
+                            <a class="collapse-item" href="<?= $_SESSION['role'] == 'siswa' ? 'nilaiKelasSiswa.php' : 'laporanNilai.php' ?>">Laporan Nilai</a>
+                            <a class="collapse-item" href="laporanPengumumunan.php">Laporan Pengumuman</a>
+                        <?php endif; ?>
+                        <?php if ($_SESSION['role'] == "siswa") : ?>
+                            <a class="collapse-item" href="<?= $_SESSION['role'] == 'siswa' ? 'nilaiKelasSiswa.php' : 'laporanNilai.php' ?>">Laporan Nilai</a>
+                            <a class="collapse-item" href="laporanPengumumunan.php">Laporan Pengumuman</a>
+                            <a class="collapse-item" href="laporanSpk.php">Laporan Hasil</a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </li>

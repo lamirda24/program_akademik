@@ -7,8 +7,9 @@ include 'koneksi.php';
 session_start();
 $kode_kelas = $_GET['kelas'];
 $kode_siswa = $_GET['siswa'];
-$q = mysqli_query($koneksi, "SELECT * FROM nilai where kelas='$kode_kelas' and siswa='$kode_siswa'");
-$resq = mysqli_fetch_array($q);
+$q = mysqli_query($koneksi, "SELECT * FROM nilai join siswa on nilai.kode_siswa = siswa.kode_siswa where kode_kelas='$kode_kelas' and nilai.kode_siswa='$kode_siswa'");
+
+// $resq = mysqli_fetch_array($q);
 $q1 = mysqli_query($koneksi, "SELECT nama_siswa from siswa where kode_siswa='$kode_siswa'");
 $nama_siswa = mysqli_fetch_row($q1);
 $q2 = mysqli_query($koneksi, "SELECT * FROM kelas where kode_kelas='$kode_kelas'");
@@ -75,7 +76,7 @@ $resq2 = mysqli_fetch_row($q2);
 
                         <?php
                         $nomor = 1;
-                        while ($row = mysqli_fetch_array($q)) { ?>
+                        while ($row = mysqli_fetch_assoc($q)) { ?>
                             <tr>
                                 <td><?php echo $nomor; ?></td>
                                 <td><?php echo $row['kodematpel']; ?></td>

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 
 <?php
+session_start();
+$kodeuser = $_SESSION['kodeuser'];
 include "includes/config.php";
 if (isset($_POST['simpan'])) {
     if (isset($_REQUEST['inputkode'])) {
@@ -35,7 +37,6 @@ $jurusan = mysqli_query($connection, "select * from jurusan");
 
 <?php
 ob_start();
-session_start();
 if (!isset($_SESSION['emailuser']))
     header("location:login.php");
 ?>
@@ -78,10 +79,19 @@ if (!isset($_SESSION['emailuser']))
                 <tbody>
                     <?php
                     if (isset($_POST["kirim"])) {
-                        $search = $_POST['search'];
-                        $query = mysqli_query($connection, "select * from kelas where kode_kelas like '%" . $search . "%'");
+                        if ($_SESSION['role'] == "guru") {
+                            $search = $_POST['search'];
+                            $query = mysqli_query($connection, "select * from jadwal  join kelas on jadwal.kode_kelas = kelas.kode_kelas where nama_kelas like '%" . $search . "%' and kode_guru='$kodeuser'");
+                        } else {
+                            $search = $_POST['search'];
+                            $query = mysqli_query($connection, "select * from kelas where kode_kelas like '%" . $search . "%'");
+                        }
                     } else {
-                        $query = mysqli_query($connection, "select * from kelas");
+                        if ($_SESSION['role'] == "guru") {
+                            $query = mysqli_query($connection, "select * from jadwal  join kelas on jadwal.kode_kelas = kelas.kode_kelas where kode_guru='$kodeuser'");
+                        } else {
+                            $query = mysqli_query($connection, "select * from kelas");
+                        }
                     }
                     $nomor = 1;
                     while ($row = mysqli_fetch_array($query)) { ?>

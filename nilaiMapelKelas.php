@@ -10,31 +10,19 @@ $res = mysqli_query($connection, "select * from kelas where kode_kelas = '$kodeK
 $kelas = mysqli_fetch_row($res);
 $mapel = mysqli_query($connection, "select * from matapelajaran where kode_matpel= '$kodeMapel'");
 $resMapel = mysqli_fetch_row($mapel);
+$resSiswa = mysqli_query($connection, "select * from kelasdetail join siswa on kelasdetail.kode_siswa = siswa.kode_siswa where kode_kelas = '$kodeKelas'");
 
-$resSiswa = mysqli_query($connection, "select * from kelasdetail where kode_kelas = '$kodeKelas'");
 
 if (isset($_POST['simpan'])) {
     $namaSiswa = $_POST['siswa'];
     $nilaiTugas = $_POST['tugas'];
     $nilaiUts = $_POST['uts'];
     $nilaiUas = $_POST['uas'];
-
-    mysqli_query($connection, "INSERT INTO `nilai` (`kelas`, `siswa`, `kodematpel`, `matpel`, `tugas`, `uts`, `uas`) VALUES ('$kodeKelas', '$namaSiswa', '$kodeMapel', '$resMapel[2]', ' $nilaiTugas', '$nilaiUts', ' $nilaiUas');");
+    // echo "INSERT INTO `nilai` (`kelas`, `siswa`, `kodematpel`, `matpel`, `tugas`, `uts`, `uas`) VALUES ('$kodeKelas', '$namaSiswa', '$kodeMapel', '$resMapel[2]', ' $nilaiTugas', '$nilaiUts', ' $nilaiUas')";
+    // die;
+    mysqli_query($connection, "INSERT INTO `nilai` (`kelas`, `siswa`, `kodematpel`, `matpel`, `tugas`, `uts`, `uas`) VALUES ('$kodeKelas', '$namaSiswa', '$kodeMapel', '$resMapel[2]', ' $nilaiTugas', '$nilaiUts', ' $nilaiUas'");
     header("location:nilaiMapelKelas.php?kelas=$kodeKelas&mapel=$kodeMapel");
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ?>
@@ -61,6 +49,7 @@ if (!isset($_SESSION['emailuser']))
 
         <body>
             <div>
+                <div class="col-sm-1"></div>
 
                 <div class="col-sm-10">
                     <div class="jumbotron jumbotron-fluid">
@@ -68,7 +57,7 @@ if (!isset($_SESSION['emailuser']))
                             <h1 class="display-4">Input Nilai <?php echo $resMapel[2] ?></h1>
                         </div>
                     </div>
-                    <!--penutup jumbotron-->
+
                     <div>
                         <form method="POST">
                             <div class="form-group row mb-2">
@@ -76,8 +65,9 @@ if (!isset($_SESSION['emailuser']))
                                 <div class="col-sm-6">
                                     <select name="siswa" class="form-control" id="siswa">
                                         <option>Siswa</option>
-                                        <?php while ($siswa = mysqli_fetch_array($resSiswa)) { ?>
-                                            <option value="<?php echo $siswa["kode_siswa"]; ?>"><?php echo $siswa["nama_siswa"] ?>
+                                        <?php while ($siswa = mysqli_fetch_assoc($resSiswa)) { ?>
+                                            <option value="<?php echo $siswa["kode_siswa"]; ?>">
+                                                <?php echo $siswa["nama_siswa"]; ?>
                                             </option>
                                         <?php } ?>
 
@@ -150,12 +140,12 @@ if (!isset($_SESSION['emailuser']))
                             <?php
                             if (isset($_POST["kirim"])) {
                                 $search = $_POST['search'];
-                                $query = mysqli_query($connection, "select * from nilai join kelasdetail on nilai.siswa = kelasdetail.kode_siswa where nama_siswa like '%" . $search . "%' and kodematpel = '$kodeMapel' AND kelasdetail.kode_kelas = '$kodeKelas'  order by nama_siswa asc ");
+                                $query = mysqli_query($connection, "select * from nilai join kelasdetail on nilai.kode_siswa = kelasdetail.kode_siswa join siswa on nilai.kode_siswa = siswa.kode_siswa where nama_siswa like '%" . $search . "%' and kodematpel = '$kodeMapel' AND kelasdetail.kode_kelas = '$kodeKelas'  order by nama_siswa asc ");
                             } else {
-                                $query = mysqli_query($connection, "select * from nilai join kelasdetail on nilai.siswa = kelasdetail.kode_siswa where kodematpel = '$kodeMapel' AND kelas = '$kodeKelas' order by nama_siswa asc");
+                                $query = mysqli_query($connection, "select * from nilai join kelasdetail on nilai.kode_siswa = kelasdetail.kode_siswa join siswa on nilai.kode_siswa = siswa.kode_siswa where kodematpel = '$kodeMapel' AND nilai.kode_kelas = '$kodeKelas' order by nama_siswa asc");
                             }
                             $nomor = 1;
-                            while ($row = mysqli_fetch_array($query)) {
+                            while ($row = mysqli_fetch_assoc($query)) {
                             ?>
                                 <tr>
                                     <td><?php echo $nomor; ?></td>
