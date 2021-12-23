@@ -7,14 +7,22 @@ $kodeMatpel = $_GET['mapel'];
 
 if (isset($_POST['simpan'])) {
     $kelas = $_GET['kelas'];
-    $siswa = $_POST['siswa'];
+    $kode_siswa = $_REQUEST['siswa'];
     $kehadiran = $_POST['kehadiran'];
 
-    mysqli_query($connection, "insert into absensi values('','$kelas','$siswa','$kodeMatpel','$kehadiran')");
+    // mysqli_query($connection, "insert into absensi values('','$kelas','$siswa','$kodeMatpel','$kehadiran')");
     header("location:absensiinput.php?kelas=$kodeKelas&mapel=$kodeMatpel");
 }
 
 $siswa = mysqli_query($connection, "select * from kelasdetail  join siswa on kelasdetail.kode_siswa = siswa.kode_siswa where kode_kelas='$kodeKelas'");
+$datasiswa = [];
+while ($row = mysqli_fetch_assoc($siswa)) {
+    $data = $row;
+    array_push($datasiswa, $data);
+}
+
+
+
 $kelas = mysqli_query($connection, "select * from kelas where kode_kelas='$kodeKelas'");
 $absensi = mysqli_query($connection, "select * from absensi where kelas='" . $_GET['kelas'] . "'");
 $mapel = mysqli_query($connection, "select nama_matpel from matapelajaran where kode_matpel='$kodeMatpel'");
@@ -65,47 +73,62 @@ if (!isset($_SESSION['emailuser']))
 
                     <form method="POST">
 
-
                         <div class="form-group row">
-                            <label for="kelas" class="col-sm-2 col-form-label">Kelas</label>
 
-                            <div class="col-sm-10">
-                                <input type="text" disabled value="<?php echo $kodeKelas; ?>" class="form-control" name="kelas" />
+
+                            <div class="col-lg-5">
+                                <input type="date" class="form-control" name="tanggal">
+
                             </div>
                         </div>
-
-                        <!--code drop down-->
                         <div class="form-group row">
-                            <label for="kode_siswa" class="col-sm-2 col-form-label">Kode Siswa</label>
-                            <div class="col-sm-10">
-                                <select name="siswa" class="form-control" id="kodebarang">
-                                    <option>....</option>
-                                    <?php while ($row = mysqli_fetch_assoc($siswa)) { ?>
-                                        <option value="<?php echo $row["kode_siswa"] ?>">
-                                            <?php echo $row["nama_siswa"] ?>
-                                        </option>
+
+
+                            <table class="table table success">
+                                <thead class="thead-light">
+                                    <?php $i = 1; ?>
+                                    <tr>
+                                        <th style="width: 10px;">No</th>
+                                        <th style="width: 150px;">Kode Siswa</th>
+                                        <th>Nama Siswa</th>
+                                        <th>Kehadiran</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($datasiswa as $row) { ?>
+                                        <tr>
+                                            <td>
+                                                <?= $i++ ?>
+                                            </td>
+                                            <td>
+                                                <input type="text" name="siswa[]" value="<?= $row['kode_siswa'] ?>" class="form-control" />
+                                            </td>
+                                            <td>
+                                                <input type="text" name="nama[]" value="<?= $row['nama_siswa'] ?>" class="form-control" />
+                                            </td>
+                                            <td>
+                                                <select name="kehadiran[]" class="form-control" id="kehadiran">
+                                                    <option value="0">Tidak Hadir</option>
+                                                    <option value="1">Hadir</option>
+                                                </select>
+                                            </td>
+                                        </tr>
                                     <?php } ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="kode_siswa" class="col-sm-2 col-form-label">Kehadiran</label>
-                            <div class="col-sm-10">
-                                <select name="kehadiran" class="form-control" id="kehadiran">
-                                    <option value="0">Tidak Hadir</option>
-                                    <option value="1">Hadir</option>
-                                </select>
-                            </div>
-                        </div>
 
-                        <div class="form-group row">
-                            <div class="col-sm-2">
-                            </div>
-                            <div class="col-sm-10">
+
+                                </tbody>
+
+                            </table>
+                            <div class="col-lg-11 offset-10">
                                 <input type="submit" class="btn btn-primary" value="Simpan" name="simpan">
                                 <input type="button" class="btn btn-secondary" value="Batal" name="batal">
                             </div>
+
                         </div>
+                        <!--disini-->
+
+
                     </form>
                 </div>
 
