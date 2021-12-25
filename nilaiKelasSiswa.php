@@ -95,9 +95,6 @@ if (!isset($_SESSION['emailuser']))
                         <th>No</th>
                         <th>Kode</th>
                         <th>Matpel</th>
-                        <th>Tugas</th>
-                        <th>UTS</th>
-                        <th>UAS</th>
                         <th>Rata Rata</th>
 
                     </tr>
@@ -113,10 +110,8 @@ if (!isset($_SESSION['emailuser']))
                             <td><?php echo $nomor; ?></td>
                             <td><?php echo $row['kode_kelas']; ?></td>
                             <td><?php echo $row['matpel']; ?></td>
-                            <td><?php echo $row['tugas']; ?></td>
-                            <td><?php echo $row['uts']; ?></td>
-                            <td><?php echo $row['uas']; ?></td>
-                            <td><?php echo number_format((($row['uas'] + $row['uts'] + $row['tugas']) / 3), 2, ","); ?></td>
+
+                            <td><?php echo number_format((($row['nilai_akhir'])), 2, ","); ?></td>
 
 
 

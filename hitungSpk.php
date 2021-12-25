@@ -29,10 +29,8 @@ foreach ($rows as $res) {
     foreach ($kriteria as $row) {
         // print_r($row['kode_kriteria'] == 'KK001');
         if ($row['kode_kriteria'] == "KK001") {
-            if ($c1 <= $row['max'] && $c1 > $row['min']) {
+            if ($c1 < $row['max'] && $c1 > $row['min']) {
                 $bobotC1 = $row['bobot'];
-            } else {
-                $bobotC1 = 5;
             }
         }
         if ($row['kode_kriteria'] == "KK002") {

@@ -88,7 +88,7 @@ if (!isset($_SESSION['emailuser']))
                         }
                     } else {
                         if ($_SESSION['role'] == "guru") {
-                            $query = mysqli_query($connection, "select * from jadwal  join kelas on jadwal.kode_kelas = kelas.kode_kelas where kode_guru='$kodeuser'");
+                            $query = mysqli_query($connection, "select * from jadwal  join kelas on jadwal.kode_kelas = kelas.kode_kelas where kode_guru='$kodeuser' group by jadwal.kode_kelas");
                         } else {
                             $query = mysqli_query($connection, "select * from kelas");
                         }

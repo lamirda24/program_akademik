@@ -9,8 +9,22 @@ if (isset($_POST['simpan'])) {
     $kelas = $_GET['kelas'];
     $kode_siswa = $_REQUEST['siswa'];
     $kehadiran = $_POST['kehadiran'];
+    $tanggal = date('Y-m-d');
+    $jmlh = count($kode_siswa);
+    for ($i = 0; $i < $jmlh; $i++) {
+        $result = mysqli_query($connection, "select * from absensi where siswa='$kode_siswa[$i]' and tgl_absen ='$tanggal'");
 
-    // mysqli_query($connection, "insert into absensi values('','$kelas','$siswa','$kodeMatpel','$kehadiran')");
+        $row_cnt = mysqli_num_rows($result);
+        echo $row_cnt;;
+        if ($row_cnt > 0) {
+            // echo "UPDATE  absensi SET kehadiran='$kehadiran' where siswa=$kode_siswa[$i]";
+            mysqli_query($connection, "UPDATE  absensi SET kehadiran='$kehadiran' where siswa=$kode_siswa[$i]");
+        } else {
+            // echo "insert into absensi values('','$kelas','$kode_siswa[$i]','$kodeMatpel','$kehadiran[$i]',$tanggal)";
+            mysqli_query($connection, "insert into absensi values('','$kelas','$kode_siswa[$i]','$kodeMatpel','$kehadiran[$i]',$tanggal)");
+        }
+    }
+
     header("location:absensiinput.php?kelas=$kodeKelas&mapel=$kodeMatpel");
 }
 
@@ -74,10 +88,11 @@ if (!isset($_SESSION['emailuser']))
                     <form method="POST">
 
                         <div class="form-group row">
-
-
-                            <div class="col-lg-5">
-                                <input type="date" class="form-control" name="tanggal">
+                            <div class="col-md-1">
+                                Tanggal:
+                            </div>
+                            <div class="col-md-2">
+                                <input type="date" class="form-control" name="tanggal" value="<?= date('Y-m-d'); ?>" disabled>
 
                             </div>
                         </div>
@@ -122,7 +137,7 @@ if (!isset($_SESSION['emailuser']))
                             </table>
                             <div class="col-lg-11 offset-10">
                                 <input type="submit" class="btn btn-primary" value="Simpan" name="simpan">
-                                <input type="button" class="btn btn-secondary" value="Batal" name="batal">
+
                             </div>
 
                         </div>
@@ -135,64 +150,9 @@ if (!isset($_SESSION['emailuser']))
             </div>
             <!--penutup class row-->
 
-            <div class="row">
-                <div class="col-sm-1"></div>
-                <div class="col-sm-10">
-                    <div class="jumbotron jumbotron-fluid">
-                        <div class="container">
-                            <h1 class="display-4">Daftar Kehadiran Siswa </h1>
-                        </div>
-                    </div>
-                    <!--penutup jumbotron-->
+            <!--  -->
 
-                    <table class="table table success">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>No</th>
-                                <th>Kode Siswa</th>
-                                <th>Nama Siswa</th>
-                                <th>Kehadiran</th>
-                                <th colspan="3" style="text-align: center">Action</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <?php
-
-                            $query = mysqli_query($connection, "select * from absensi join siswa on siswa.kode_siswa = absensi.siswa where kode_kelas = '$kodeKelas' and matpel = '$kodeMatpel'");
-                            $nomor = 1;
-                            while ($row = mysqli_fetch_array($query)) { ?>
-                                <tr>
-                                    <td><?php echo $nomor; ?></td>
-                                    <td><?php echo $row['kode_siswa']; ?></td>
-                                    <td><?php echo $row['nama_siswa']; ?></td>
-                                    <?php if ($row['kehadiran'] == 1) { ?>
-                                        <td>Hadir</td>
-                                    <?php } else { ?>
-                                        <td>Tidak Hadir</td>
-                                    <?php }
-                                    ?>
-                                    <!-- untuk icon edit dan delete -->
-                                    <td>
-                                        <a href="absensiDelete.php?siswa=<?php echo $row['id'] ?>&kelas=<?= $kodeKelas ?>&mapel=<?= $kodeMatpel ?>" class="btn btn-danger btn-sm" title="Delete">
-
-                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                                            </svg>
-                                        </a>
-                                    </td>
-                                    <!-- akhir icon edit delete -->
-                                </tr>
-                                <?php $nomor = $nomor + 1; ?>
-                            <?php } ?>
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-                <script type="text/javascript" src="js/bootstrap.min.js"></script>
+            <script type="text/javascript" src="js/bootstrap.min.js"></script>
         </body>
         <!--penutup container fluid-->
     </div>

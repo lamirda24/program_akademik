@@ -75,7 +75,9 @@ if (!isset($_SESSION['emailuser']))
                         <th>Kode</th>
                         <th>Nama</th>
                         <th>Jurusan</th>
-                        <th colspan="1" style="text-align: center">Action</th>
+                        <th>Nomor</th>
+
+                        <th>Action</th>
                     </tr>
                 </thead>
 
@@ -95,9 +97,10 @@ if (!isset($_SESSION['emailuser']))
                             <td><?php echo $row['kode_kelas']; ?></td>
                             <td><?php echo $row['nama_kelas']; ?></td>
                             <td><?php echo $row['jurusan']; ?></td>
+                            <td><?php echo $row['nomor_kelas']; ?></td>
                             <!-- untuk icon edit dan delete -->
                             <td>
-                                <a href="kelascetak.php?ubah=<?php echo $row["kode_kelas"] ?>" class="btn btn-warning btn-sm" title="Cetak">
+                                <a href=" kelascetak.php?ubah=<?php echo $row["kode_kelas"] ?>" class="btn btn-warning btn-sm" title="Cetak">
 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
                                         <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />

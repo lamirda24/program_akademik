@@ -7,8 +7,7 @@ if (isset($_POST['simpan'])) {
     $siswa = $_GET['ubah2'];
     $matpel = $_POST['inputmatpel'];
     $tugas = $_POST['inputtugas'];
-    $uts = $_POST['inpututs'];
-    $uas = $_POST['inputuas'];
+
 
     mysqli_query($connection, "insert into nilai values('$kelas','$siswa','$matpel','$tugas','$uts','$uas')");
     header("location:nilaiinput.php?ubah=$kelas&ubah2=$siswa");
@@ -92,25 +91,13 @@ if (!isset($_SESSION['emailuser']))
                         </div>
 
                         <div class="form-group row">
-                            <label for="tugas" class="col-sm-2 col-form-label">Tugas </label>
+                            <label for="tugas" class="col-sm-2 col-form-label">Nilai Akhir </label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="inputtugas" id="tugas" placeholder="0 - 100 " maxlength="3" required="">
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="uts" class="col-sm-2 col-form-label">UTS </label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="inpututs" id="uts" placeholder="0 - 100 " maxlength="3" required="">
-                            </div>
-                        </div>
 
-                        <div class="form-group row">
-                            <label for="uas" class="col-sm-2 col-form-label">UAS </label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="inputuas" id="uas" placeholder="0 - 100 " maxlength="3" required="">
-                            </div>
-                        </div>
 
                         <div class="form-group row">
                             <div class="col-sm-2">
@@ -166,9 +153,8 @@ if (!isset($_SESSION['emailuser']))
                                     <td><?php echo $row['kelas']; ?></td>
                                     <td><?php echo $row['siswa']; ?></td>
                                     <td><?php echo $row['matpel']; ?></td>
-                                    <td><?php echo $row['tugas']; ?></td>
-                                    <td><?php echo $row['uts']; ?></td>
-                                    <td><?php echo $row['uas']; ?></td>
+                                    <td><?php echo $row['nilai_akhir']; ?></td>
+
                                     <!-- untuk icon edit dan delete -->
                                     <td>
                                         <a href="nilaiedit.php?ubah=<?php echo $row['kelas'] ?>&ubah2=<?php echo $row['siswa']; ?>" class="btn btn-success btn-sm" title="Edit">

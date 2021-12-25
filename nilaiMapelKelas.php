@@ -16,8 +16,7 @@ $resSiswa = mysqli_query($connection, "select * from kelasdetail join siswa on k
 if (isset($_POST['simpan'])) {
     $namaSiswa = $_POST['siswa'];
     $nilaiTugas = $_POST['tugas'];
-    $nilaiUts = $_POST['uts'];
-    $nilaiUas = $_POST['uas'];
+
 
     mysqli_query($connection, "INSERT INTO `nilai` VALUES ('','$kodeKelas', '$namaSiswa', '$kodeMapel', '$resMapel[2]', '$nilaiTugas', '$nilaiUts', '$nilaiUas')");
 
@@ -81,18 +80,7 @@ if (!isset($_SESSION['emailuser']))
                                     <input type="text" name="tugas" class="form-control" />
                                 </div>
                             </div>
-                            <div class="form-group row mb-2">
-                                <label for="search" class="col-sm-3">Nilai UTS</label>
-                                <div class="col-sm-6">
-                                    <input type="text" name="uts" class="form-control" />
-                                </div>
-                            </div>
-                            <div class="form-group row mb-2">
-                                <label for="search" class="col-sm-3">Nilai UAS</label>
-                                <div class="col-sm-6">
-                                    <input type="text" name="uas" class="form-control" />
-                                </div>
-                            </div>
+
                             <div class="form-group row">
                                 <div class="col-sm-10 offset-3">
                                     <input type="submit" class="btn btn-primary right" value="Simpan" name="simpan">
@@ -129,10 +117,6 @@ if (!isset($_SESSION['emailuser']))
                                 <th>No</th>
                                 <th>Kode</th>
                                 <th>Nama</th>
-                                <th>Tugas</th>
-                                <th>UTS</th>
-                                <th>UAS</th>
-
                                 <th>Rata Rata</th>
                                 <th>Action</th>
 
@@ -154,10 +138,7 @@ if (!isset($_SESSION['emailuser']))
                                     <td><?php echo $nomor; ?></td>
                                     <td><?php echo $row['kode_siswa']; ?></td>
                                     <td><?php echo $row['nama_siswa']; ?></td>
-                                    <td><?php echo $row['tugas']; ?></td>
-                                    <td><?php echo $row['uts']; ?></td>
-                                    <td><?php echo $row['uas']; ?></td>
-                                    <td><?php echo number_format((($row['uas'] + $row['uts'] + $row['tugas']) / 3), 2, ","); ?></td>
+                                    <td><?php echo number_format((($row['nilai_akhir'])), 2, ","); ?></td>
                                     <td>
                                         <a href="nilaihapus.php?kelas=<?= $row['kode_kelas'] ?>&siswa=<?php echo $row['kode_siswa'] ?>&mapel=<?php echo $row['kodematpel']; ?>" class="btn btn-danger btn-sm" title="Delete">
 

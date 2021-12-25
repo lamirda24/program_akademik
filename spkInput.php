@@ -13,7 +13,7 @@ if (isset($_POST['simpan'])) {
         $kode_siswa = $sess;
     } else {
         if (isset($_REQUEST['kode_siswa'])) {
-            $kode_siswa = $_SESSION['kodeuser'];
+            $kode_siswa = $_POST['kode_siswa'];
         } else {
 ?>
             <h1>Anda Harus Mengisi Data</h1>

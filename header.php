@@ -159,7 +159,7 @@ if (!isset($_SESSION['kodeuser'])) {
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Daftar Table :</h6>
                         <?php if ($_SESSION['role'] == "admin" || $_SESSION['role'] == "kepsek") : ?>
-                            <a class="collapse-item" href="laporanSeluruhSiswa.php">Laporan Siswa</a>
+                            <a class="collapse-item" href="laporanSeluruhSiswa.php?filter=All">Laporan Siswa</a>
                             <a class="collapse-item" href="laporansiswa.php">Laporan Kelas</a>
                             <a class="collapse-item" href="<?= $_SESSION['role'] == 'siswa' ? 'nilaiKelasSiswa.php' : 'laporanNilai.php' ?>">Laporan Nilai</a>
                             <a class="collapse-item" href="laporanGuru.php">Laporan Guru</a>

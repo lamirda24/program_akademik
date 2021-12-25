@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<?php session_start(); ?>
+<?php session_start();
+$filter = $_GET['filter'];
+?>
 <html>
 
 <head>
@@ -40,7 +42,7 @@
                 ?>
                 <div class="row">
                     <div class="col-md-5">
-                        <h5>Report: Daftar Siswa</h5>
+                        <h5>Report: Daftar Siswa <?= $filter == "All" ? "" : $filter ?></h5>
                     </div>
 
                 </div>
@@ -57,39 +59,56 @@
                         </tr>
                         <?php
                         $no = 1;
-                        $sql = mysqli_query($koneksi, "SELECT * FROM siswa join kelasdetail on siswa.kode_siswa = kelasdetail.kode_siswa  join kelas on kelasdetail.kode_kelas = kelas.kode_kelas order by siswa.nama_siswa asc");
-                        while ($data = mysqli_fetch_array($sql)) {
-                        ?>
-                            <tr>
+                        if ($filter == "All") {
 
-                                <td>
-                                    <?= $no++ ?>
-                                </td>
-                                <td>
-                                    <?= $data['kode_siswa']; ?>
-                                </td>
-                                <td>
-                                    <?= $data['nama_siswa']; ?>
-                                </td>
-                                <td>
-                                    <?= $data['nama_kelas'] . " " . $data['jurusan'] . " " . $data['nomor_kelas']; ?>
-                                </td>
-                                <td>
-                                    <?= $data['notelp_siswa']; ?>
-                                </td>
-                                <td>
-                                    <?= $data['alamat_siswa']; ?>
+                            $sql = mysqli_query($koneksi, "SELECT * FROM siswa join kelasdetail on siswa.kode_siswa = kelasdetail.kode_siswa  join kelas on kelasdetail.kode_kelas = kelas.kode_kelas order by siswa.nama_siswa asc");
+                        } elseif ($filter == "IPA") {
+                            $sql = mysqli_query($koneksi, "SELECT * FROM siswa join kelasdetail on siswa.kode_siswa = kelasdetail.kode_siswa  join kelas on kelasdetail.kode_kelas = kelas.kode_kelas where jurusan='IPA' order by siswa.nama_siswa asc");
+                        } elseif ($filter == "IPS") {
+                            $sql = mysqli_query($koneksi, "SELECT * FROM siswa join kelasdetail on siswa.kode_siswa = kelasdetail.kode_siswa  join kelas on kelasdetail.kode_kelas = kelas.kode_kelas where jurusan='IPS' order by siswa.nama_siswa asc");
+                        }
+
+                        // $qCheck = mysqli_query($connection, "select * from spk where kode_siswa='$kode_siswa'");
+                        $rowcount = mysqli_num_rows($sql);
+                        if ($rowcount > 0) {
+                            while ($data = mysqli_fetch_assoc($sql)) {
+                        ?>
+                                <tr>
+
+                                    <td>
+                                        <?= $no++ ?>
+                                    </td>
+                                    <td>
+                                        <?= $data['kode_siswa']; ?>
+                                    </td>
+                                    <td>
+                                        <?= $data['nama_siswa']; ?>
+                                    </td>
+                                    <td>
+                                        <?= $data['nama_kelas'] . " " . $data['jurusan'] . " " . $data['nomor_kelas']; ?>
+                                    </td>
+                                    <td>
+                                        <?= $data['notelp_siswa']; ?>
+                                    </td>
+                                    <td>
+                                        <?= $data['alamat_siswa']; ?>
+                                    </td>
+                                </tr>
+                            <?php }
+                        } else { ?>
+                            <tr>
+                                <td colspan="6" center>
+                                    no data
                                 </td>
                             </tr>
-                        <?php }
+                            <tr>
 
-                        ?>
-                        <tr>
+                            <?php } ?>
 
-                        </tr>
-                        <?php
-                        // }
-                        ?>
+                            </tr>
+                            <?php
+                            // }
+                            ?>
                     </table>
                 </div>
 
