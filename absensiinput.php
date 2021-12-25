@@ -9,21 +9,25 @@ if (isset($_POST['simpan'])) {
     $kelas = $_GET['kelas'];
     $kode_siswa = $_REQUEST['siswa'];
     $kehadiran = $_POST['kehadiran'];
-    $tanggal = date('Y-m-d');
+
+    $tanggal = $_POST['inputtanggal'];
+
     $jmlh = count($kode_siswa);
     for ($i = 0; $i < $jmlh; $i++) {
         $result = mysqli_query($connection, "select * from absensi where siswa='$kode_siswa[$i]' and tgl_absen ='$tanggal'");
 
         $row_cnt = mysqli_num_rows($result);
-        echo $row_cnt;;
+        // echo $row_cnt;;
         if ($row_cnt > 0) {
-            // echo "UPDATE  absensi SET kehadiran='$kehadiran' where siswa=$kode_siswa[$i]";
-            mysqli_query($connection, "UPDATE  absensi SET kehadiran='$kehadiran' where siswa=$kode_siswa[$i]");
+            // echo "UPDATE  absensi SET kehadiran='$kehadiran[$i]' where siswa='$kode_siswa[$i]'";
+            mysqli_query($connection, "UPDATE  absensi SET kehadiran='$kehadiran[$i]' where siswa='$kode_siswa[$i]'");
         } else {
-            // echo "insert into absensi values('','$kelas','$kode_siswa[$i]','$kodeMatpel','$kehadiran[$i]',$tanggal)";
-            mysqli_query($connection, "insert into absensi values('','$kelas','$kode_siswa[$i]','$kodeMatpel','$kehadiran[$i]',$tanggal)");
+            // echo "INSERT into absensi values('','$kelas','$kode_siswa[$i]','$kodeMatpel','$kehadiran[$i]','$tanggal')";
+            mysqli_query($connection, "INSERT into absensi values('','$kelas','$kode_siswa[$i]','$kodeMatpel','$kehadiran[$i]','$tanggal')");
         }
     }
+
+
 
     header("location:absensiinput.php?kelas=$kodeKelas&mapel=$kodeMatpel");
 }
@@ -86,14 +90,10 @@ if (!isset($_SESSION['emailuser']))
                     <!--penutup jumbotron-->
 
                     <form method="POST">
-
                         <div class="form-group row">
-                            <div class="col-md-1">
-                                Tanggal:
-                            </div>
-                            <div class="col-md-2">
-                                <input type="date" class="form-control" name="tanggal" value="<?= date('Y-m-d'); ?>" disabled>
-
+                            <label for="tanggal_pengumuman" class="col-sm-2 col-form-label">Tanggal</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" name="inputtanggal" id="tanggal_pengumuman" placeholder="Input Tanggal Pengumuman ">
                             </div>
                         </div>
                         <div class="form-group row">

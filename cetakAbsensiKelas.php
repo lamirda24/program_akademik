@@ -8,7 +8,8 @@ session_start();
 
 $kode_kelas = $_GET['kelas'];
 $kode_matpel = $_GET['matpel'];
-$absensi = mysqli_query($koneksi, "SELECT absensi.*, siswa.nama_siswa FROM absensi JOIN siswa ON absensi.siswa = siswa.kode_siswa where absensi.kode_kelas='$kode_kelas' AND matpel='$kode_matpel'");
+$tanggal = $_GET['date'];
+$absensi = mysqli_query($koneksi, "SELECT absensi.*, siswa.nama_siswa FROM absensi JOIN siswa ON absensi.siswa = siswa.kode_siswa where absensi.kode_kelas='$kode_kelas' AND matpel='$kode_matpel' and absensi.tgl_absen='$tanggal'");
 
 $query = mysqli_query($koneksi, "SELECT * from kelas where kode_kelas='" . $kode_kelas . "'");
 $res = mysqli_fetch_array($query);
@@ -60,7 +61,7 @@ $results = mysqli_fetch_array($detail);
                     <div class="col-md-5 mt-3 mb-3">
                         <h5>Absensi Kelas <?= $res[1] . " " . $res[2] . " " . $res[3] ?></h5>
                         <h5> Mata Pelajaran : <?= $result["nama_matpel"] ?></h5>
-                        <h5> Hari: <?= $results["hari"] ?> / Jam: <?= $results["jammulai"] . " - " . $results["jamselesai"] ?> </h5>
+                        <h5> Hari: <?= date('d F Y', strtotime($tanggal)) ?> / Jam: <?= $results["jammulai"] . " - " . $results["jamselesai"] ?> </h5>
 
                     </div>
 

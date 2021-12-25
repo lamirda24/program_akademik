@@ -15,7 +15,6 @@ $nama_siswa = mysqli_fetch_row($q1);
 $q2 = mysqli_query($koneksi, "SELECT * FROM kelas where kode_kelas='$kode_kelas'");
 $resq2 = mysqli_fetch_row($q2);
 
-
 ?>
 
 <head>

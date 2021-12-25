@@ -16,9 +16,13 @@ $resSiswa = mysqli_query($connection, "select * from kelasdetail join siswa on k
 if (isset($_POST['simpan'])) {
     $namaSiswa = $_POST['siswa'];
     $nilaiTugas = $_POST['tugas'];
-
-
-    mysqli_query($connection, "INSERT INTO `nilai` VALUES ('','$kodeKelas', '$namaSiswa', '$kodeMapel', '$resMapel[2]', '$nilaiTugas', '$nilaiUts', '$nilaiUas')");
+    $cek = mysqli_query($connection, "select * from nilai where kode_siswa='$namaSiswa'");
+    $row_cnt = mysqli_num_rows($cek);
+    if ($row_cnt > 0) {
+        mysqli_query($connection, "UPDATE nilai SET nilai_akhir='$nilaiTugas' where kode_siswa='$namaSiswa'");
+    } else {
+        mysqli_query($connection, "INSERT INTO `nilai` VALUES ('','$kodeKelas', '$namaSiswa', '$kodeMapel', '$resMapel[2]', '$nilaiTugas')");
+    }
 
 
     header("location:nilaiMapelKelas.php?kelas=$kodeKelas&mapel=$kodeMapel");
@@ -75,7 +79,7 @@ if (!isset($_SESSION['emailuser']))
                                 </div>
                             </div>
                             <div class="form-group row mb-2">
-                                <label for="search" class="col-sm-3">Nilai Tugas</label>
+                                <label for="search" class="col-sm-3">Nilai</label>
                                 <div class="col-sm-6">
                                     <input type="text" name="tugas" class="form-control" />
                                 </div>
@@ -117,7 +121,7 @@ if (!isset($_SESSION['emailuser']))
                                 <th>No</th>
                                 <th>Kode</th>
                                 <th>Nama</th>
-                                <th>Rata Rata</th>
+                                <th>Nilai</th>
                                 <th>Action</th>
 
                             </tr>
