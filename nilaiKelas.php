@@ -83,17 +83,16 @@ if (!isset($_SESSION['emailuser']))
                     if (isset($_POST["kirim"])) {
                         if ($_SESSION['role'] == "guru") {
                             $search = $_POST['search'];
-                            $query = mysqli_query($connection, "select * from jadwal  join kelas on jadwal.kode_kelas = kelas.kode_kelas where nama_kelas like '%" . $search . "%' and kode_guru='$kodeuser'");
+                            $query = mysqli_query($connection, "select * from jadwal  join kelas on jadwal.kode_kelas = kelas.kode_kelas where nama_kelas like '%" . $search . "%' and kode_guru='$kodeuser' group by jadwal.kode_kelas");
                         } else {
-
                             $search = $_POST['search'];
-                            $query = mysqli_query($connection, "select * from kelas where nama_kelas like '%" . $search . "%'");
+                            $query = mysqli_query($connection, "select * from kelas where nama_kelas like '%" . $search . "%' group by jadwal.kode_kelas");
                         }
                     } else {
                         if ($_SESSION['role'] == "guru") {
-                            $query = mysqli_query($connection, "select * from jadwal  join kelas on jadwal.kode_kelas = kelas.kode_kelas where kode_guru='$kodeuser'");
+                            $query = mysqli_query($connection, "select * from jadwal  join kelas on jadwal.kode_kelas = kelas.kode_kelas where kode_guru='$kodeuser' group by jadwal.kode_kelas");
                         } else {
-                            $query = mysqli_query($connection, "select * from kelas");
+                            $query = mysqli_query($connection, "select * from kelas group by kode_kelas");
                         }
                     }
                     $nomor = 1;

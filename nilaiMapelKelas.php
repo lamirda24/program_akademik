@@ -16,15 +16,13 @@ $resSiswa = mysqli_query($connection, "select * from kelasdetail join siswa on k
 if (isset($_POST['simpan'])) {
     $namaSiswa = $_POST['siswa'];
     $nilaiTugas = $_POST['tugas'];
-    $cek = mysqli_query($connection, "select * from nilai where kode_siswa='$namaSiswa'");
+    $cek = mysqli_query($connection, "select * from nilai where kode_siswa='$namaSiswa' and kodematpel='$kodeMapel'");
     $row_cnt = mysqli_num_rows($cek);
     if ($row_cnt > 0) {
         mysqli_query($connection, "UPDATE nilai SET nilai_akhir='$nilaiTugas' where kode_siswa='$namaSiswa'");
     } else {
         mysqli_query($connection, "INSERT INTO `nilai` VALUES ('','$kodeKelas', '$namaSiswa', '$kodeMapel', '$resMapel[2]', '$nilaiTugas')");
     }
-
-
     header("location:nilaiMapelKelas.php?kelas=$kodeKelas&mapel=$kodeMapel");
 }
 
