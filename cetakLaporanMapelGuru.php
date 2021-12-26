@@ -5,13 +5,21 @@
 <?php
 include 'koneksi.php';
 session_start();
+$filter = $_GET['filter'];
+if ($filter == "mapel") {
 
-
-$kodeMapel = $_GET['mapel'];
-$query = mysqli_query($koneksi, "SELECT * FROM jadwal where kode_matpel ='$kodeMapel'");
-$numrows = mysqli_num_rows($query);
-$namamapel  = mysqli_query($koneksi, "SELECT * FROM jadwal where kode_matpel='$kodeMapel' ");
-$res = mysqli_fetch_assoc($namamapel);
+    $kodeMapel = $_GET['mapel'];
+    $query = mysqli_query($koneksi, "SELECT * FROM jadwal where kode_matpel ='$kodeMapel'");
+    $numrows = mysqli_num_rows($query);
+    $namamapel  = mysqli_query($koneksi, "SELECT * FROM jadwal where kode_matpel='$kodeMapel' ");
+    $res = mysqli_fetch_assoc($namamapel);
+} elseif ($filter == "kelas") {
+    $kodeKelas = $_GET['kelas'];
+    $query = mysqli_query($koneksi, "SELECT * FROM jadwal where kode_kelas ='$kodeKelas'");
+    $numrows = mysqli_num_rows($query);
+    $namamapel  = mysqli_query($koneksi, "SELECT * FROM jadwal where kode_kelas='$kodeKelas' ");
+    $res = mysqli_fetch_assoc($namamapel);
+}
 
 
 ?>
@@ -50,7 +58,7 @@ $res = mysqli_fetch_assoc($namamapel);
 
                 <div class="row">
                     <div class="col-md-5 mt-3 mb-3">
-                        <h5>Matapelajaran <?= $res['matpel'] ?></h5>
+                        <h5><?= $filter == "kelas" ? "Kelas: " . $res['nama_kelas'] : "Mata Pelajaran: " . $res['matpel'] ?></h5>
 
 
                     </div>
@@ -63,10 +71,13 @@ $res = mysqli_fetch_assoc($namamapel);
 
                             <tr>
                                 <th>No</th>
-                                <th>Kelas</th>
+                                <th><?= $filter == "kelas" ? "Mata Pelajaran" : "Kelas" ?></th>
                                 <th>Tahun</th>
                                 <th>Guru</th>
                                 <th>Hari</th>
+                                <th>Jam Mulai</th>
+                                <th>Jam Selesai</th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -75,16 +86,17 @@ $res = mysqli_fetch_assoc($namamapel);
                             <?php
 
                             if ($numrows > 0) {
-
-
                                 $nomor = 1;
                                 while ($row = mysqli_fetch_array($query)) { ?>
                                     <tr>
                                         <td><?php echo $nomor; ?></td>
-                                        <td><?php echo $row['nama_kelas']; ?></td>
+                                        <td><?php echo $filter == "kelas" ? $row['matpel'] : $row['nama_kelas']; ?></td>
                                         <td><?php echo $row['tahun']; ?></td>
                                         <td><?php echo $row['guru']; ?></td>
                                         <td><?php echo $row['hari']; ?></td>
+                                        <td><?php echo $row['jammulai']; ?></td>
+                                        <td><?php echo $row['jamselesai']; ?></td>
+
 
 
                                         <!-- untuk icon edit dan delete -->

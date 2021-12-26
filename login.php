@@ -11,7 +11,7 @@
     if (isset($_POST["submitlogin"])) {
         $emailuser = $_POST["useremail"];
         $passuser = MD5($_POST["pass"]);
-        $sql_login = mysqli_query($connection, "SELECT * FROM akun_user WHERE email_user = '$emailuser' OR password_user = '$passuser'");
+        $sql_login = mysqli_query($connection, "SELECT * FROM akun_user WHERE email_user = '$emailuser' AND password_user = '$passuser'");
 
         if (mysqli_num_rows($sql_login) > 0) {
 
@@ -31,7 +31,11 @@
             header("location:index.php");
         } else { ?>
             <script>
-                alert("AKUN TIDAK TERDAFTAR!")
+                alert("Password atau email salah!")
+                <?php
+                header("location:login.php");
+
+                ?>
             </script>
     <?php die;
         }

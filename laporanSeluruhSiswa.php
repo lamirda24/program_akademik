@@ -97,7 +97,7 @@ if (!isset($_SESSION['emailuser']))
                 <div class="col-md-6 offset-md-4">
                     <form method="POST">
                         <div class="form-group row">
-                            <div class="col-sm-8">
+                            <div class="col-sm-4">
                                 <input type="text" name="search" class="form-control" id="search" value="<?php if (isset($_POST['search'])) {
                                                                                                                 echo $_POST['search'];
                                                                                                             } ?>" placeholder="Cari Nama siswa  ">
@@ -112,9 +112,7 @@ if (!isset($_SESSION['emailuser']))
                     </form>
 
                 </div>
-                <div class="col-md-2">
 
-                </div>
             </div>
 
 

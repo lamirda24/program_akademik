@@ -92,7 +92,7 @@ if (!isset($_SESSION['emailuser']))
                             <td><?php echo $nomor; ?></td>
                             <td><?php echo $row['kode_guru']; ?></td>
                             <td><?php echo $row['nama_guru']; ?></td>
-                            <td><?php echo $row['kelas']; ?></td>
+                            <td><?php echo $row['nama_kelas']; ?></td>
                             <td><?php echo $row['matpel']; ?></td>
                             <!-- untuk icon edit dan delete -->
 

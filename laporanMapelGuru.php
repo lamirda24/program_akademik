@@ -3,11 +3,22 @@
 <?php
 include "includes/config.php";
 session_start();
-$kodeMapel = $_GET['mapel'];
-$query = mysqli_query($connection, "SELECT * FROM jadwal where kode_matpel ='$kodeMapel'");
-$numrows = mysqli_num_rows($query);
-$namamapel  = mysqli_query($connection, "SELECT * FROM jadwal where kode_matpel='$kodeMapel' ");
-$res = mysqli_fetch_assoc($namamapel);
+
+$filter = $_GET['filter'];
+if ($filter == "mapel") {
+
+    $kodeMapel = $_GET['mapel'];
+    $query = mysqli_query($connection, "SELECT * FROM jadwal where kode_matpel ='$kodeMapel'");
+    $numrows = mysqli_num_rows($query);
+    $namamapel  = mysqli_query($connection, "SELECT * FROM jadwal where kode_matpel='$kodeMapel' ");
+    $res = mysqli_fetch_assoc($namamapel);
+} elseif ($filter == "kelas") {
+    $kodeKelas = $_GET['kelas'];
+    $query = mysqli_query($connection, "SELECT * FROM jadwal where kode_kelas ='$kodeKelas'");
+    $numrows = mysqli_num_rows($query);
+    $namamapel  = mysqli_query($connection, "SELECT * FROM jadwal where kode_kelas='$kodeKelas' ");
+    $res = mysqli_fetch_assoc($namamapel);
+}
 ?>
 
 <html lang="en">
@@ -33,7 +44,13 @@ if (!isset($_SESSION['emailuser']))
 
             <div class="jumbotron jumbotron-fluid">
                 <div class="container">
-                    <h1 class="display-4">Laporan Matapelajaran <?= $res['matpel'] ?></h1>
+                    <?php if ($filter == "kelas") { ?>
+                        <h1 class="display-4">Laporan Matapelajaran Kelas <?= $res['nama_kelas'] ?></h1>
+
+                    <?php } elseif ($filter == "mapel") { ?>
+                        <h1 class="display-4">Laporan Matapelajaran <?= $res['matpel'] ?></h1>
+
+                    <?php } ?>
                 </div>
             </div>
             <!--penutup jumbotron-->
@@ -61,12 +78,22 @@ if (!isset($_SESSION['emailuser']))
 
 
                 <div class="col-md-2">
-                    <a href="cetakLaporanMapelGuru.php?mapel=<?= $kodeMapel ?>" target="_blank" class="btn btn-warning ml-5">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
-                            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
-                            <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z" />
-                        </svg> Print
-                    </a>
+                    <?php if ($filter == "kelas") { ?>
+                        <a href="cetakLaporanMapelGuru.php?filter=kelas&kelas=<?= $kodeKelas ?>" target="_blank" class="btn btn-warning ml-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
+                                <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
+                                <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z" />
+                            </svg> Print
+                        </a>
+                    <?php } elseif ($filter == "mapel") { ?>
+                        <a href="cetakLaporanMapelGuru.php?filter=mapel&mapel=<?= $kodeMapel ?>" target="_blank" class="btn btn-warning ml-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
+                                <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
+                                <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z" />
+                            </svg> Print
+                        </a>
+                    <?php } ?>
+
                 </div>
 
 
@@ -77,10 +104,13 @@ if (!isset($_SESSION['emailuser']))
                 <thead class="thead-dark">
                     <tr>
                         <th>No</th>
-                        <th>Kelas</th>
+                        <th><?= $filter == "kelas" ? "Mata Pelajaran" : "Kelas" ?></th>
                         <th>Tahun</th>
                         <th>Guru</th>
                         <th>Hari</th>
+                        <th>Jam Mulai</th>
+                        <th>Jam Selesai</th>
+
 
 
                     </tr>
@@ -90,16 +120,17 @@ if (!isset($_SESSION['emailuser']))
                     <?php
 
                     if ($numrows > 0) {
-
-
                         $nomor = 1;
                         while ($row = mysqli_fetch_array($query)) { ?>
                             <tr>
                                 <td><?php echo $nomor; ?></td>
-                                <td><?php echo $row['nama_kelas']; ?></td>
+                                <td><?php echo $filter == "kelas" ? $row['matpel'] : $row['nama_kelas']; ?></td>
                                 <td><?php echo $row['tahun']; ?></td>
                                 <td><?php echo $row['guru']; ?></td>
                                 <td><?php echo $row['hari']; ?></td>
+                                <td><?php echo $row['jammulai']; ?></td>
+                                <td><?php echo $row['jamselesai']; ?></td>
+
 
 
                                 <!-- untuk icon edit dan delete -->

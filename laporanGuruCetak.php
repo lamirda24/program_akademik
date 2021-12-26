@@ -68,7 +68,7 @@
                                     <td><?php echo $nomor; ?></td>
                                     <td><?php echo $row['kode_guru']; ?></td>
                                     <td><?php echo $row['nama_guru']; ?></td>
-                                    <td><?php echo $row['kelas']; ?></td>
+                                    <td><?php echo $row['nama_kelas']; ?></td>
                                     <td><?php echo $row['matpel']; ?></td>
                                     <td><?php echo $row['notelp_guru']; ?></td>
                                     <td><?php echo $row['alamat_guru']; ?></td>
