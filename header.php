@@ -167,6 +167,9 @@ if (!isset($_SESSION['kodeuser'])) {
                             <a class="collapse-item" href="laporanSpk.php">Laporan Hasil</a>
                             <a class="collapse-item" href="laporanAbsensi.php">Laporan Absensi</a>
                             <a class="collapse-item" href="laporanJadwal.php">Laporan Jadwal</a>
+                            <a class="collapse-item" href="laporanMapel.php">Laporan Matapelajaran</a>
+
+
 
                         <?php endif; ?>
                         <?php if ($_SESSION['role'] == "guru") : ?>
