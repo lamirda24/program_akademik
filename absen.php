@@ -11,7 +11,7 @@ $kodeKelas = $_GET['kelas'];
 $kodeMatpel = $_GET['mapel'];
 $tgl = $_GET['date'];
 
-$query = mysqli_query($connection, "select * from absensi join siswa on absensi.siswa  = siswa.kode_siswa where kode_kelas='$kodeKelas' and matpel='$kodeMatpel' and tgl_absen='$tgl'");
+$query = mysqli_query($connection, "select *,absensi.id as kode_absen from absensi join siswa on absensi.siswa  = siswa.kode_siswa where kode_kelas='$kodeKelas' and matpel='$kodeMatpel' and tgl_absen='$tgl'");
 // echo "select * from absensi join siswa on absensi.kode_siswa  = siswa.kode_siswa where kode_kelas='$kodeKelas' and matpel='$kodeMatpel' and tgl_absen='$tgl'";
 // die;
 
@@ -71,7 +71,7 @@ $query = mysqli_query($connection, "select * from absensi join siswa on absensi.
                         <tbody>
                             <?php
                             $nomor = 1;
-                            while ($row = mysqli_fetch_array($query)) { ?>
+                            while ($row = mysqli_fetch_assoc($query)) { ?>
                                 <tr>
                                     <td><?php echo $nomor; ?></td>
                                     <td><?php echo $row['kode_siswa']; ?></td>
@@ -84,18 +84,19 @@ $query = mysqli_query($connection, "select * from absensi join siswa on absensi.
                                     ?>
                                     <!-- untuk icon edit dan delete -->
                                     <td>
-                                        <a href="absensiDelete.php?siswa=<?php echo $row['id'] ?>&kelas=<?= $kodeKelas ?>&mapel=<?= $kodeMatpel ?>" class="btn btn-danger btn-sm" title="Delete">
+                                        <a href="absensiDelete.php?id=<?php echo $row['kode_absen'] ?>&kelas=<?= $kodeKelas ?>&mapel=<?= $kodeMatpel ?>&date=<?= $tgl ?>" class="btn btn-info btn-sm" title="Delete">
 
-                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-power" viewBox="0 0 16 16">
+                                                <path d="M7.5 1v7h1V1h-1z" />
+                                                <path d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812z" />
                                             </svg>
                                         </a>
                                     </td>
                                     <!-- akhir icon edit delete -->
                                 </tr>
                                 <?php $nomor = $nomor + 1; ?>
-                            <?php } ?>
+                            <?php
+                            } ?>
                         </tbody>
 
                     </table>
